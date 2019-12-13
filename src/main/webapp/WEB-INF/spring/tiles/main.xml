@@ -7,6 +7,14 @@
 	<!-- 메인 페이지 -->
 	<definition name="templateMain" template="/WEB-INF/views/layout/templateMain.jsp">
 		<put-attribute name="header" value="/WEB-INF/views/layout/header/header.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/layout/body/body.jsp" />
+		<put-attribute name="category" value="/WEB-INF/views/layout/category/category.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/views/layout/footer/footer.jsp" />
+	</definition>
+	
+	<!-- 메인화면 -->
+	<definition name="*/*.main" extends="templateMain">
+		<put-attribute name="body" value="/WEB-INF/views/layout/templateMain.jsp" />
 	</definition>
 	
 </tiles-definitions>
