@@ -40,4 +40,6 @@ public class LogAspect {
 	public static void severe(Object obj) {
 		logger.severe(logMsg + String.valueOf(obj));
 	}
+
+
 }

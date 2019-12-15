@@ -1,4 +1,4 @@
-package com.board.header.service;
+package com.board.body.service;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,21 +9,22 @@ import com.board.aop.LogAspect;
 
 /**
  * @author choi jung eun
- * @date 2019. 12. 13.
- * @description 헤더 관련 서비스
+ * @date 2019. 12. 15.
+ * @description 바디 관련 서비스
  */
 
 @Component
-public class MainServiceImp implements MainService {
+public class BodyServiceImp implements BodyService {
 
 	@Override
-	public void main(ModelAndView mav) {
+	public void boardWrite(ModelAndView mav) {
 		// TODO Auto-generated method stub
-		//메인화면에 가져갈 글목록과 페이징 처리필요. 
+		//글쓰기 필요
 		HttpServletRequest request=(HttpServletRequest)mav.getModel().get("request");
-		LogAspect.info(LogAspect.logMsg+ "asdasdsad");
+		LogAspect.info(LogAspect.logMsg+ "글쓰기");
 		
-		mav.setViewName("body/body.main");
+		mav.setViewName("body/boardWrite.main");
+		
 	}
-	
+
 }

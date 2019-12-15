@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>프로그래밍</title>
+<c:set var="root" value="${pageContext.request.contextPath}" />
 </head>
 <body>
 

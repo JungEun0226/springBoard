@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.board.aop.LogAspect;
 import com.board.header.service.MainService;
 
 /**
@@ -19,7 +20,6 @@ import com.board.header.service.MainService;
  * @description 헤더 관련 컨트롤러
  */
 
-@Repository
 @Controller
 public class HeaderController {
 	
@@ -35,6 +35,7 @@ public class HeaderController {
 		mav.addObject("request", request);
 		
 		mainService.main(mav);
+		LogAspect.info(LogAspect.logMsg);
 		
 		return mav;
 	}

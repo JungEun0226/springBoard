@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>프로그래밍</title>
+<c:set var="root" value="${pageContext.request.contextPath}" />
 </head>
 <body>
 <!-- Sidebar -->
@@ -14,8 +15,9 @@
 		<i class="fa fa-remove"></i>
 	</a>
 	<a class="w3-bar-item w3-button w3-hover-black" href="#">로그인/로그아웃</a>
-	<a class="w3-bar-item w3-button w3-hover-black" href="#">회원가입</a>
+	<a class="w3-bar-item w3-button w3-hover-black" href="${root}/signup.com">회원가입</a>
 	<a class="w3-bar-item w3-button w3-hover-black" href="#">마이페이지</a>
+	<a class="w3-bar-item w3-button w3-hover-black" href="${root}/boardWrite.com">글쓰기</a><!-- 로그인해야만 마이페이지랑 글쓰기 보임 -->
 	<hr>
 	<h4 class="w3-bar-item"><b>Category</b></h4>
 	<a class="w3-bar-item w3-button w3-hover-black" href="#">전체글보기</a>
