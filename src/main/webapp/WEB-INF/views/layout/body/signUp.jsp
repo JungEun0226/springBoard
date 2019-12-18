@@ -8,11 +8,11 @@
 <meta charset="UTF-8">
 <title>프로그래밍</title>
 <c:set var="root" value="${pageContext.request.contextPath}" />
-<script type="text/javascript" src="resources/js/bodySignUp.js"></script>
+<script type="text/javascript" src="${root}/js/bodySignUp.js"></script>
 <style type="text/css">
 .form-control{font-size: 18px;}
 .control-label{padding-top: 2px !important;}
-span button{
+button{
 	height: 35px !important;
     padding-top: 4px !important;
     font-size: 20px !important;
@@ -32,7 +32,7 @@ span button{
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="memberID">아이디:</label>
 						<div class="col-sm-7">
-							<input type="text" class="form-control" id="memberID">
+							<input type="text" class="form-control" id="memberID" placeholder="4~20글자로 써주세요">
 						</div>
 						<span>
 							<button id="memberIDCheck" type="button" class="btn btn-primary">아이디 중복 확인</button>
@@ -42,26 +42,29 @@ span button{
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="memberPassword">비밀번호:</label>
 						<div class="col-sm-7">
-							<input type="password" class="form-control" id="memberPassword">
+							<input type="password" class="form-control" id="memberPassword" placeholder="4~20글자로 써주세요">
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="memberPasswordCheck">비밀번호 재확인:</label>
 						<div class="col-sm-7">
-							<input type="password" class="form-control" id="memberPasswordCheck">
+							<input type="password" class="form-control" id="memberPasswordCheck" placeholder="4~20글자로 써주세요">
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="memberEmail">이메일:</label>
 						<div class="col-sm-7">
-							<input type="email" class="form-control" id="memberEmail">
+							<input type="email" class="form-control" id="memberEmail" placeholder="4~50글자로 써주세요">
 						</div>
-						<span><button id="emailCheck" type="button" class="btn btn-primary" >가입 여부 확인</button></span>
+						<span>
+							<button id="emailCheck" type="button" class="btn btn-primary" >가입 여부 확인</button>
+							<input id="emailCheckValue" type="hidden" value="false"><!-- 이메일 중복값 확인 트루값일때 회원가입가능 -->
+						</span>
 					</div>
 					
 					<div class="form-group" style="text-align: center;">
 						<div class="col-sm-offset-1 col-sm-10">
-							<button id="signUp" type="button" class="btn btn-primary" style="font-size: 20px; color: black; background-color: #f0f0f0 !important; border-color: lightgrey;">가입하기</button>
+							<button id="signUp" type="button" class="btn btn-primary">가입하기</button>
 						</div>
 					</div>
 				</form>

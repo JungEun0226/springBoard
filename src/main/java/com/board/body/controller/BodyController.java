@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.board.aop.LogAspect;
@@ -24,10 +26,10 @@ public class BodyController {
 	@Autowired
 	private BodyService bodyService;
 	
-	//회원가입
+	//회원가입 페이지
 	@RequestMapping(value = "/signup.com", method = RequestMethod.GET)
 	public String signUp() {
-		LogAspect.info(LogAspect.logMsg+"회원가입진입");
+		//LogAspect.info(LogAspect.logMsg+"회원가입진입");
 		
 		return "body/signUp.main";
 	}
@@ -36,14 +38,44 @@ public class BodyController {
 	@RequestMapping(value = "/memberidcheck.com", method = RequestMethod.GET)
 	public ModelAndView memberIdCheck(HttpServletRequest request, HttpServletResponse response) {
 		//로그인 정보 가지고 와서 아이디 가져가야함
-		LogAspect.info(LogAspect.logMsg+"아이디"+request.getParameter("memberid"));
+		//LogAspect.info(LogAspect.logMsg+"아이디");
 		ModelAndView mav=new ModelAndView();
+		mav.addObject("request", request);
+		mav.addObject("response", response);
 		
-		int count=bodyService.memberIdCheck(request.getParameter("memberid"));
-		mav.addObject("count",count);
-		mav.setViewName("body/signUp.main");
+		bodyService.memberIdCheck(mav);
 		
-		return mav;
+		return null;
+	}
+	
+	//이메일 중복 체크
+	@RequestMapping(value = "/emailCheck.com", method = RequestMethod.GET)
+	public ModelAndView emailCheck(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mav=new ModelAndView();
+		mav.addObject("request", request);
+		mav.addObject("response", response);
+		
+		bodyService.emailCheck(mav);
+		
+		return null;
+	}
+	
+	//회원가입 정보 insert
+	@RequestMapping(value = "/signupOk.com", method = RequestMethod.POST)
+	public ModelAndView signupOk(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mav=new ModelAndView();
+		mav.addObject("request", request);
+		
+		bodyService.signupOk(mav);
+		
+		return null;
+	}
+	
+	//로그인 페이지 
+	@RequestMapping(value = "/login.com", method = RequestMethod.GET)
+	public String login() {
+		
+		return "body/login.main";
 	}
 	
 	//글쓰기 페이지

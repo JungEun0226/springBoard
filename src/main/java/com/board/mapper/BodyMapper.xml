@@ -7,5 +7,17 @@
 		select count(*) from member where memberid=#{id}
 	</select>
 	
+	<select id="getEmailCheck" parameterType="String" resultType="int">
+	<![CDATA[
+		select count(*) from member where memberemail=#{email}
+	]]>
+	</select>
+	
+	<insert id="setSignUp" parameterType="com.board.body.dto.MemberDto">
+	<![CDATA[
+		INSERT INTO member VALUES(membernumber_seq.nextval, #{memberid}, #{memberpass}, #{memberemail})
+	]]>
+	</insert>
+	
 </mapper>
 

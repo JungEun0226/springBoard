@@ -5,7 +5,7 @@ package com.board.body.dto;
  * @date 2019. 12. 17.
  * @description 회원정보 dto
  */
-public class memberDto {
+public class MemberDto {
 	private int membernumber;
 	private String memberid;
 	private String memberpass;

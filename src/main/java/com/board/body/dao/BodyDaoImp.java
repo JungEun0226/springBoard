@@ -4,6 +4,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.board.body.dto.MemberDto;
+
 /**
  * @author choi jung eun
  * @date 2019. 12. 17.
@@ -20,5 +22,17 @@ public class BodyDaoImp implements BodyDao {
 	public int getMemberIdCheck(String id) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(namespace+"getMemberIdCheck", id);
+	}
+
+	@Override
+	public int getEmailCheck(String email) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+"getEmailCheck", email);
+	}
+
+	@Override
+	public void setSignUp(MemberDto dto) {
+		// TODO Auto-generated method stub
+		sqlSession.insert(namespace+"setSignUp", dto);
 	}
 }

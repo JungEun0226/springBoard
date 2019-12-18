@@ -12,6 +12,10 @@ public interface BodyService {
 
 	void boardWrite(ModelAndView mav);
 
-	Integer memberIdCheck(String id);
+	void memberIdCheck(ModelAndView mav);
+
+	void emailCheck(ModelAndView mav);
+
+	void signupOk(ModelAndView mav);
 	
 }
