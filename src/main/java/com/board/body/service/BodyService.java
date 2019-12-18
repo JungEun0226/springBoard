@@ -11,5 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 public interface BodyService {
 
 	void boardWrite(ModelAndView mav);
+
+	Integer memberIdCheck(String id);
 	
 }

@@ -2,10 +2,12 @@ package com.board.body.service;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.board.aop.LogAspect;
+import com.board.body.dao.BodyDao;
 
 /**
  * @author choi jung eun
@@ -15,7 +17,9 @@ import com.board.aop.LogAspect;
 
 @Component
 public class BodyServiceImp implements BodyService {
-
+	@Autowired
+	private BodyDao bodyDao;
+	
 	@Override
 	public void boardWrite(ModelAndView mav) {
 		// TODO Auto-generated method stub
@@ -25,6 +29,17 @@ public class BodyServiceImp implements BodyService {
 		
 		mav.setViewName("body/boardWrite.main");
 		
+	}
+	
+	//아이디 중복체크
+	@Override
+	public Integer memberIdCheck(String id) {
+		// TODO Auto-generated method stub
+		
+		int result=bodyDao.getMemberIdCheck("id");
+		LogAspect.info(LogAspect.logMsg+ "아이디체크"+result);
+		
+		return result;
 	}
 
 }

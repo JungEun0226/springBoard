@@ -32,6 +32,20 @@ public class BodyController {
 		return "body/signUp.main";
 	}
 	
+	//아이디중복체크
+	@RequestMapping(value = "/memberidcheck.com", method = RequestMethod.GET)
+	public ModelAndView memberIdCheck(HttpServletRequest request, HttpServletResponse response) {
+		//로그인 정보 가지고 와서 아이디 가져가야함
+		LogAspect.info(LogAspect.logMsg+"아이디"+request.getParameter("memberid"));
+		ModelAndView mav=new ModelAndView();
+		
+		int count=bodyService.memberIdCheck(request.getParameter("memberid"));
+		mav.addObject("count",count);
+		mav.setViewName("body/signUp.main");
+		
+		return mav;
+	}
+	
 	//글쓰기 페이지
 	@RequestMapping(value = "/boardWrite.com", method = RequestMethod.GET)
 	public ModelAndView boardWrite(HttpServletRequest request, HttpServletResponse response) {

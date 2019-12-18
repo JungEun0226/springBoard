@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <title>프로그래밍</title>
 <c:set var="root" value="${pageContext.request.contextPath}" />
+<script type="text/javascript" src="resources/js/bodySignUp.js"></script>
 <style type="text/css">
 .form-control{font-size: 18px;}
 .control-label{padding-top: 2px !important;}
@@ -34,7 +35,7 @@ span button{
 							<input type="text" class="form-control" id="memberID">
 						</div>
 						<span>
-							<button id="memberIDCheck" type="button" class="btn btn-primary" onclick="iDCheck()">아이디 중복 확인</button>
+							<button id="memberIDCheck" type="button" class="btn btn-primary">아이디 중복 확인</button>
 							<input id="memberIDCheckValue" type="hidden" value="false"><!-- 아이디중복확인 트루값일때 회원가입가능 -->
 						</span>
 					</div>
