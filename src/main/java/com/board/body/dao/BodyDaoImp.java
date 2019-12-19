@@ -35,4 +35,12 @@ public class BodyDaoImp implements BodyDao {
 		// TODO Auto-generated method stub
 		sqlSession.insert(namespace+"setSignUp", dto);
 	}
+
+	@Override
+	public String login(MemberDto dto) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+"login", dto);
+	}
+
+
 }

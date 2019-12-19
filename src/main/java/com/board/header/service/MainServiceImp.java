@@ -21,7 +21,7 @@ public class MainServiceImp implements MainService {
 		// TODO Auto-generated method stub
 		//메인화면에 가져갈 글목록과 페이징 처리필요. 
 		HttpServletRequest request=(HttpServletRequest)mav.getModel().get("request");
-		LogAspect.info(LogAspect.logMsg+ "asdasdsad");
+		//LogAspect.info(LogAspect.logMsg+ "asdasdsad");
 		
 		mav.setViewName("body/body.main");
 	}

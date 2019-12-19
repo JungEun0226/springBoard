@@ -35,7 +35,7 @@ public class HeaderController {
 		mav.addObject("request", request);
 		
 		mainService.main(mav);
-		LogAspect.info(LogAspect.logMsg);
+		//LogAspect.info(LogAspect.logMsg);
 		
 		return mav;
 	}

@@ -25,10 +25,10 @@ public class BodyServiceImp implements BodyService {
 	@Autowired
 	private BodyDao bodyDao;
 	
+	//글쓰기 필요
 	@Override
 	public void boardWrite(ModelAndView mav) {
 		// TODO Auto-generated method stub
-		//글쓰기 필요
 		HttpServletRequest request=(HttpServletRequest)mav.getModel().get("request");
 		LogAspect.info(LogAspect.logMsg+ "글쓰기");
 		
@@ -95,7 +95,40 @@ public class BodyServiceImp implements BodyService {
 		dto.setMemberemail(email);
 		
 		bodyDao.setSignUp(dto);
+	}
+	
+	//로그인 시도
+	@Override
+	public void loginOk(ModelAndView mav) {
+		// TODO Auto-generated method stub
+		HttpServletRequest request=(HttpServletRequest) mav.getModel().get("request");
+		HttpServletResponse response=(HttpServletResponse) mav.getModel().get("response");
+		String id=request.getParameter("id");
+		String password=request.getParameter("pass");
+		
+		MemberDto dto=new MemberDto();
+		dto.setMemberid(id);
+		dto.setMemberpass(password);
+		
+		String membernumber=bodyDao.login(dto);
+		//LogAspect.info(LogAspect.logMsg+"회원 번호"+membernumber);
+		
+		if(membernumber!=null) {	//로그인성공시
+			request.getSession().setAttribute("membernumber", membernumber);	//아이디랑 회원번호 세션에 넣어줌
+			request.getSession().setAttribute("memberid", id);
+			request.getSession().setMaxInactiveInterval(60*30);	//세션 유지 시간 30분.
+		}
+		
+		response.setContentType("application/text;charset=utf-8");
+		PrintWriter out;
+		try {
+			out = response.getWriter();
+			out.print(membernumber);
+			out.flush();
 			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 	}
 

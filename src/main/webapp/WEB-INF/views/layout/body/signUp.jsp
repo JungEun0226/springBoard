@@ -1,14 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>프로그래밍</title>
 <c:set var="root" value="${pageContext.request.contextPath}" />
-<script type="text/javascript" src="${root}/js/bodySignUp.js"></script>
+<%-- <script type="text/javascript" src="${root}/js/bodySignUp.js"></script> --%>
+<script type="text/javascript" src="/spring/js/bodySignUp.js"></script>
 <style type="text/css">
 .form-control{font-size: 18px;}
 .control-label{padding-top: 2px !important;}
@@ -24,6 +23,7 @@ button{
 </style>
 </head>
 <body>
+	<input type="hidden" value="${root}" id="root"/>
 	<div class="w3-main" style="margin-left: 250px">
 		<div class="w3-row w3-padding-64">
 			<div class="w3-twothird w3-container" style="width: 88%;">

@@ -16,20 +16,5 @@
 		<a href="${root}/main.com" class="w3-bar-item w3-button w3-theme-l1" >프로그래밍 커뮤니티</a>
 	</div>
 </div>
-
-
-
-	<!-- <div class="header-all">
-		<div class="header-title">
-			<a href="">프로그래밍 커뮤니티</a>
-		</div>
-		<div class="header-nav">
-			<ul>
-				<li><a href="">로그인/로그아웃</a></li>
-				<li><a href="">회원가입</a></li>
-				<li><a href="">마이페이지</a></li>
-			</ul>
-		</div>
-	</div> -->
 </body>
 </html>

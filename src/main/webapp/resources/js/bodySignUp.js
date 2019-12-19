@@ -2,6 +2,8 @@
  * 회원가입 관련 자바스크립트 중복체크, 빈칸체크, 데이터넘겨주기 해야함
  */
 $(document).ready(function() {
+	var root=$("#root").val();
+	
 	//아이디 중복체크 확인
 	$("#memberIDCheck").click(function() {
 		var memberid=$("#memberID").val();		
@@ -9,7 +11,7 @@ $(document).ready(function() {
 		//alert(memberid+"\t"+memberIDCheckValue);
 		
 		$.ajax({
-			url:"/spring/memberidcheck.com?memberid="+memberid,
+			url:root+"/memberidcheck.com?memberid="+memberid,
 			type:"get",
 			success:function(data){
 //				alert(data);
@@ -29,7 +31,7 @@ $(document).ready(function() {
 		var memberEmail=$("#memberEmail").val();
 		
 		$.ajax({
-			url:"/spring/emailCheck.com?memberEmail="+memberEmail,
+			url:root+"/emailCheck.com?memberEmail="+memberEmail,
 			type:"get",
 			success:function(data){
 //				alert(data);
@@ -101,12 +103,12 @@ $(document).ready(function() {
 		
 		$.ajax({
 			type:"post",
-			url:"/spring/signupOk.com",
+			url: root+"/signupOk.com",
 			dataType:"json",
 			data: sendData,
 			success:function(data){
 				alert("회원가입에 성공했습니다. 로그인 해주세요");
-				location.href="/spring/login.com";
+				location.href=root+"/login.com";
 			}
 		});
 	});

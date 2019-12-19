@@ -17,5 +17,7 @@ public interface BodyService {
 	void emailCheck(ModelAndView mav);
 
 	void signupOk(ModelAndView mav);
+
+	void loginOk(ModelAndView mav);
 	
 }

@@ -10,4 +10,8 @@ public interface BodyDao {
 
 	void setSignUp(MemberDto dto);
 
+	String login(MemberDto dto);
+
+
+
 }

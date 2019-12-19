@@ -2,6 +2,7 @@ package com.board.body.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -76,6 +77,28 @@ public class BodyController {
 	public String login() {
 		
 		return "body/login.main";
+	}
+	
+	//로그인 처리
+	@RequestMapping(value = "/loginOk.com", method = RequestMethod.POST)
+	public ModelAndView loginOk(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mav=new ModelAndView();
+		mav.addObject("request", request);
+		mav.addObject("response", response);
+		//LogAspect.info(LogAspect.logMsg+"아이디"+request.getParameter("id")+"비밀번호"+request.getParameter("pass"));
+		
+		bodyService.loginOk(mav);
+		
+		return null;
+	}
+	
+	//로그아웃 처리
+	@RequestMapping(value = "/logout.com", method = RequestMethod.GET)
+	public String logout(HttpSession session) {
+		//세션 초기화
+		session.invalidate();
+		
+		return "body/body.main";
 	}
 	
 	//글쓰기 페이지
