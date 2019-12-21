@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 public interface BodyService {
 
-	void boardWrite(ModelAndView mav);
+	void boardWriteOk(ModelAndView mav);
 
 	void memberIdCheck(ModelAndView mav);
 

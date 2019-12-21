@@ -42,5 +42,11 @@ public class BodyDaoImp implements BodyDao {
 		return sqlSession.selectOne(namespace+"login", dto);
 	}
 
+	@Override
+	public int getCategoryNumber(String categoryname) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+"getCategoryNumber", categoryname);
+	}
+
 
 }

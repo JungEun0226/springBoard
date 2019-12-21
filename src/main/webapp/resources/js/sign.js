@@ -106,10 +106,7 @@ $(document).ready(function() {
 			url: root+"/signupOk.com",
 			dataType:"json",
 			data: sendData,
-			success:function(data){
-				alert("회원가입에 성공했습니다. 로그인 해주세요");
-				location.href=root+"/login.com";
-			}
+			success:location.href=root+"/login.com"
 		});
 	});
 });

@@ -61,7 +61,7 @@ public class BodyController {
 		return null;
 	}
 	
-	//회원가입 정보 insert
+	//회원가입 처리 insert
 	@RequestMapping(value = "/signupOk.com", method = RequestMethod.POST)
 	public ModelAndView signupOk(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mav=new ModelAndView();
@@ -103,15 +103,24 @@ public class BodyController {
 	
 	//글쓰기 페이지
 	@RequestMapping(value = "/boardWrite.com", method = RequestMethod.GET)
-	public ModelAndView boardWrite(HttpServletRequest request, HttpServletResponse response) {
-		//로그인 정보 가지고 와서 아이디 가져가야함
-		ModelAndView mav=new ModelAndView();
-		mav.addObject("request", request);
-		
-		//LogAspect.info(LogAspect.logMsg+"글쓰기진입");
-		bodyService.boardWrite(mav);
-		
-		
-		return mav;
+	public String boardWrite() {
+	
+		return "body/boardWrite.main";
 	}
+	
+	//글쓰기 등록
+		@RequestMapping(value = "/boardWriteOk.com", method = RequestMethod.POST)
+		public ModelAndView boardWriteOk(HttpServletRequest request, HttpServletResponse response) {
+			//로그인 정보 가지고 와서 아이디 가져가야함
+			ModelAndView mav=new ModelAndView();
+			mav.addObject("request", request);
+			
+			//String c=request.getParameter("categorySelect");
+			//LogAspect.info(LogAspect.logMsg+"글쓰기등록"+c);
+			
+			bodyService.boardWriteOk(mav);
+			
+			
+			return null;
+		}
 }

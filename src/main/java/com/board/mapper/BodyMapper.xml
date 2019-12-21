@@ -23,5 +23,9 @@
 		select membernumber from member where memberid=#{memberid} and memberpass=#{memberpass}
 	</select>
 	
+	<select id="getCategoryNumber" parameterType="String" resultType="int">
+		select categorynumber from category where categoryname=#{categoryname}
+	</select>
+	
 </mapper>
 

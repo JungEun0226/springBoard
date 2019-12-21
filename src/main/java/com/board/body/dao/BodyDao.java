@@ -12,6 +12,8 @@ public interface BodyDao {
 
 	String login(MemberDto dto);
 
+	int getCategoryNumber(String categoryname);
+
 
 
 }

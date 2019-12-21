@@ -1,17 +1,26 @@
 package com.board.body.service;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
+import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.board.aop.LogAspect;
 import com.board.body.dao.BodyDao;
+import com.board.body.dto.BoardWriteDto;
 import com.board.body.dto.MemberDto;
 
 /**
@@ -24,17 +33,6 @@ import com.board.body.dto.MemberDto;
 public class BodyServiceImp implements BodyService {
 	@Autowired
 	private BodyDao bodyDao;
-	
-	//글쓰기 필요
-	@Override
-	public void boardWrite(ModelAndView mav) {
-		// TODO Auto-generated method stub
-		HttpServletRequest request=(HttpServletRequest)mav.getModel().get("request");
-		LogAspect.info(LogAspect.logMsg+ "글쓰기");
-		
-		mav.setViewName("body/boardWrite.main");
-		
-	}
 	
 	//아이디 중복체크
 	@Override
@@ -85,6 +83,7 @@ public class BodyServiceImp implements BodyService {
 	public void signupOk(ModelAndView mav) {
 		// TODO Auto-generated method stub
 		HttpServletRequest request=(HttpServletRequest) mav.getModel().get("request");
+		
 		String id=request.getParameter("memberID");
 		String password=request.getParameter("memberPassword");
 		String email=request.getParameter("memberEmail");
@@ -94,7 +93,8 @@ public class BodyServiceImp implements BodyService {
 		dto.setMemberpass(password);
 		dto.setMemberemail(email);
 		
-		bodyDao.setSignUp(dto);
+		bodyDao.setSignUp(dto);		
+		
 	}
 	
 	//로그인 시도
@@ -131,5 +131,55 @@ public class BodyServiceImp implements BodyService {
 		}
 		
 	}
+	
+	//글쓰기 등록
+	@Override
+	public void boardWriteOk(ModelAndView mav) {
+		// TODO Auto-generated method stub
+		HttpServletRequest request=(HttpServletRequest)mav.getModel().get("request");
+		Date date=new Date();
+		//LogAspect.info(LogAspect.logMsg);
+		
+		//카테고리 이름으로 카테고리 번호 찾기
+		BoardWriteDto dto=new BoardWriteDto();
+		dto.setMembernumber(Integer.valueOf((String) request.getSession().getAttribute("membernumber")));
+		dto.setCategorynumber(bodyDao.getCategoryNumber(request.getParameter("categoryname")));
+		dto.setTitle(request.getParameter("title"));
+		dto.setContent(request.getParameter("content"));
+		dto.setWritedate(date);
+		
+		//파일 업로드 처리
+		MultipartHttpServletRequest mpRequest=(MultipartHttpServletRequest) request;
+		Iterator<String> iter=mpRequest.getFileNames();
+		MultipartFile file=null;
+		String path="C:\\Users\\choi\\Desktop\\";
+		
+		try {
+			while(iter.hasNext()) {
+				file=mpRequest.getFile(iter.next());
+				
+				if(file.isEmpty()==false) {
+					String name=System.currentTimeMillis()+"_"+file.getOriginalFilename();
+					dto.setFilename(name);
+					dto.setFilepath(path+name);
+					
+					File f=new File(path+name);
+					file.transferTo(f);
+				}else {
+					dto.setFilename(null);
+					dto.setFilepath(null);
+				}
+			}
+			//String fileName=System.currentTimeMillis()+"_"+request.
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		dto.toString();
+		
+		//mav.setViewName("body/boardWrite.main");	//나중에 카테고리번호가지고 가서 글목록으로 이동
+		
+	}
+
 
 }

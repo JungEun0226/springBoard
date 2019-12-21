@@ -20,7 +20,7 @@
 			<a class="w3-bar-item w3-button w3-hover-black" href="${root}/signup.com">회원가입</a>
 		</c:when>
 		<c:otherwise>
-			<p class="w3-bar-item">${memberid}님</p>
+			<p class="w3-bar-item" style="margin-top:5px; ">${memberid}님</p>
 			<a class="w3-bar-item w3-button w3-hover-black" href="${root}/logout.com">로그아웃</a>
 			<a class="w3-bar-item w3-button w3-hover-black" href="#">마이페이지</a>
 			<a class="w3-bar-item w3-button w3-hover-black" href="${root}/boardWrite.com">글쓰기</a>
