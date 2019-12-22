@@ -32,7 +32,7 @@ public class HeaderController {
 	@RequestMapping(value = {"/","/main.com"}, method = RequestMethod.GET)
 	public ModelAndView home(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mav=new ModelAndView();
-		mav.addObject("request", request);
+		mav.addObject("request",request);
 		
 		mainService.main(mav);
 		//LogAspect.info(LogAspect.logMsg);

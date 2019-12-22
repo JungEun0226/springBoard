@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>프로그래밍</title>
 <c:set var="root" value="${pageContext.request.contextPath}" />
+<script type="text/javascript" src="${root}/js/category.js"></script>
 </head>
 <body>
 <!-- Sidebar -->
@@ -20,7 +21,7 @@
 			<a class="w3-bar-item w3-button w3-hover-black" href="${root}/signup.com">회원가입</a>
 		</c:when>
 		<c:otherwise>
-			<p class="w3-bar-item" style="margin-top:5px; ">${memberid}님</p>
+			<p class="w3-bar-item" style="margin-top:5px; ">${memberid}님 환영합니다!</p>
 			<a class="w3-bar-item w3-button w3-hover-black" href="${root}/logout.com">로그아웃</a>
 			<a class="w3-bar-item w3-button w3-hover-black" href="#">마이페이지</a>
 			<a class="w3-bar-item w3-button w3-hover-black" href="${root}/boardWrite.com">글쓰기</a>
@@ -28,14 +29,16 @@
 	</c:choose>
 	<hr>
 	<h4 class="w3-bar-item"><b>Category</b></h4>
-	<a class="w3-bar-item w3-button w3-hover-black" href="#">전체글보기</a>
-	<a class="w3-bar-item w3-button w3-hover-black" href="#">자바</a>
-	<a class="w3-bar-item w3-button w3-hover-black" href="#">C언어</a>
-	<a class="w3-bar-item w3-button w3-hover-black" href="#">자바스크립트</a>
-	<a class="w3-bar-item w3-button w3-hover-black" href="#">HTML/CSS</a>
-	<a class="w3-bar-item w3-button w3-hover-black" href="#">파이썬</a>
+	
+	<input type="hidden" id="categorynumber" value="${categorynumber}"/>
+	<a class="w3-bar-item w3-button w3-hover-black" href="${root}/main.com" id="listAll">전체글보기</a>
+	<a class="w3-bar-item w3-button w3-hover-black" href="${root}/main.com?categorynumber=1" id="java">자바</a>
+	<a class="w3-bar-item w3-button w3-hover-black" href="${root}/main.com?categorynumber=2" id="languageC">C언어</a>
+	<a class="w3-bar-item w3-button w3-hover-black" href="${root}/main.com?categorynumber=3" id="javascript">자바스크립트</a>
+	<a class="w3-bar-item w3-button w3-hover-black" href="${root}/main.com?categorynumber=4" id="html">HTML/CSS</a>
+	<a class="w3-bar-item w3-button w3-hover-black" href="${root}/main.com?categorynumber=5" id="python">파이썬</a>
 	<hr>
-	<a class="w3-bar-item w3-button w3-hover-black" href="#">질문게시판</a>
+	<a class="w3-bar-item w3-button w3-hover-black" href="${root}/main.com?categorynumber=6" id="qna">질문게시판</a>
 </nav>
 
 <!-- Overlay effect when opening sidebar on small screens -->

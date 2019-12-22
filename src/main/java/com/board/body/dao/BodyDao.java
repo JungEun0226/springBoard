@@ -1,5 +1,6 @@
 package com.board.body.dao;
 
+import com.board.body.dto.BoardWriteDto;
 import com.board.body.dto.MemberDto;
 
 public interface BodyDao {
@@ -13,6 +14,8 @@ public interface BodyDao {
 	String login(MemberDto dto);
 
 	int getCategoryNumber(String categoryname);
+
+	void setBoardWrite(BoardWriteDto dto);
 
 
 

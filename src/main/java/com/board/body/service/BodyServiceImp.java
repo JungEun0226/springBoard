@@ -1,7 +1,5 @@
 package com.board.body.service;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,7 +8,6 @@ import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -138,14 +135,13 @@ public class BodyServiceImp implements BodyService {
 		// TODO Auto-generated method stub
 		HttpServletRequest request=(HttpServletRequest)mav.getModel().get("request");
 		Date date=new Date();
-		//LogAspect.info(LogAspect.logMsg);
 		
 		//카테고리 이름으로 카테고리 번호 찾기
 		BoardWriteDto dto=new BoardWriteDto();
 		dto.setMembernumber(Integer.valueOf((String) request.getSession().getAttribute("membernumber")));
 		dto.setCategorynumber(bodyDao.getCategoryNumber(request.getParameter("categoryname")));
 		dto.setTitle(request.getParameter("title"));
-		dto.setContent(request.getParameter("content"));
+		dto.setContent(request.getParameter("content").replaceAll("\\r\\n", "<br>"));	//줄바꿈 처리
 		dto.setWritedate(date);
 		
 		//파일 업로드 처리
@@ -165,19 +161,20 @@ public class BodyServiceImp implements BodyService {
 					
 					File f=new File(path+name);
 					file.transferTo(f);
-				}else {
-					dto.setFilename(null);
-					dto.setFilepath(null);
 				}
+				
+				LogAspect.info(LogAspect.logMsg+dto.toString());
 			}
-			//String fileName=System.currentTimeMillis()+"_"+request.
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		
-		dto.toString();
+		//데이터베이스 등록
+		bodyDao.setBoardWrite(dto);
 		
-		//mav.setViewName("body/boardWrite.main");	//나중에 카테고리번호가지고 가서 글목록으로 이동
+		mav.addObject("categorynumber",dto.getCategorynumber());
+		mav.setViewName("body/body.main");	
 		
 	}
 

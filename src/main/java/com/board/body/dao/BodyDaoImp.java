@@ -4,6 +4,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.board.body.dto.BoardWriteDto;
 import com.board.body.dto.MemberDto;
 
 /**
@@ -46,6 +47,12 @@ public class BodyDaoImp implements BodyDao {
 	public int getCategoryNumber(String categoryname) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(namespace+"getCategoryNumber", categoryname);
+	}
+
+	@Override
+	public void setBoardWrite(BoardWriteDto dto) {
+		// TODO Auto-generated method stub
+		sqlSession.insert(namespace+"setBoardWrite", dto);
 	}
 
 
