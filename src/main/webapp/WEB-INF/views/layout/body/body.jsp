@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
@@ -8,7 +7,7 @@
 <meta charset="UTF-8">
 <title>프로그래밍</title>
 <c:set var="root" value="${pageContext.request.contextPath}" />
-<script type="text/javascript" src="${root}/js/category.js"></script>
+<script type="text/javascript" src="/spring/js/category.js"></script>
 <style type="text/css">
 .w3-twothird {
 	width: 100%;
@@ -22,7 +21,7 @@
 	<div class="w3-main" style="margin-left: 250px">
 		<div class="w3-row w3-padding-64" style="padding-bottom: 35px !important;">
 			<div class="w3-twothird w3-container">
-				<h1 class="w3-text-teal" id="mainTitle"></h1>
+				<h1 class="w3-text-teal" id="mainTitle">${categoryname }</h1>
 			</div>
 		</div>
 		

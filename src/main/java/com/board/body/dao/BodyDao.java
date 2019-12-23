@@ -17,6 +17,10 @@ public interface BodyDao {
 
 	void setBoardWrite(BoardWriteDto dto);
 
+	BoardWriteDto getBoardDetailWriteNumber(String wn);
+
+	void updateViews(String wn);
+
 
 
 }

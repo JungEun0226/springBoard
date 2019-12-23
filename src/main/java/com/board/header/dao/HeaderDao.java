@@ -15,4 +15,6 @@ public interface HeaderDao {
 
 	List<BoardWriteDto> getListCategoryNum(HashMap<String, Object> map);
 
+	String getCategoryName(int categorynumber);
+
 }

@@ -34,9 +34,5 @@
 		<tiles:insertAttribute name="body" />
 	</div>
 	
-<%--  	<!-- 발 -->
-	<div>
-		<tiles:insertAttribute name="footer" />
-	</div> --%>
 </body>
 </html>

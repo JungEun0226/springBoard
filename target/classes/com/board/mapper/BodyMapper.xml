@@ -27,12 +27,19 @@
 		select categorynumber from category where categoryname=#{categoryname}
 	</select>
 	
-	<insert id="setBoardWrite" parameterType="com.board.body.dto.MemberDto">
+	<insert id="setBoardWrite" parameterType="com.board.body.dto.BoardWriteDto">
 	<![CDATA[
 		INSERT INTO boardwrite(membernumber, categorynumber, writenumber, title, content, views, writedate, filename, filepath)
 		VALUES(#{membernumber}, #{categorynumber}, writenumber_seq.nextval, #{title}, #{content}, 0, #{writedate}, #{filename,jdbcType=VARCHAR}, #{filepath,jdbcType=VARCHAR})
 	]]>
 	</insert>
 	
+	<select id="getBoardDetailWriteNumber" parameterType="String" resultType="com.board.body.dto.BoardWriteDto">
+		select * from boardwrite where writenumber=#{wn}
+	</select>
+	
+	<update id="updateViews" parameterType="String">
+		update boardwrite set views=views+1 where writenumber=#{wn}
+	</update>
 </mapper>
 

@@ -44,6 +44,12 @@ public class HeaderDaoImp implements HeaderDao {
 		return sqlSession.selectList(namespace+"getListCategoryNum", map);
 	}
 
+	@Override
+	public String getCategoryName(int categorynumber) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+"getCategoryName", categorynumber);
+	}
+
 	
 
 }

@@ -177,6 +177,28 @@ public class BodyServiceImp implements BodyService {
 		mav.setViewName("body/body.main");	
 		
 	}
+	
+	//글 상세화면 보기
+	@Override
+	public void boardDetail(ModelAndView mav) {
+		// TODO Auto-generated method stub
+		HttpServletRequest request=(HttpServletRequest)mav.getModel().get("request");
+		BoardWriteDto dto=null;
+		String wn=request.getParameter("writenumber");
+		
+		//조회수 증가 처리
+		bodyDao.updateViews(wn);
+		
+		//글 상세목록 dto로 받아오기
+		dto=bodyDao.getBoardDetailWriteNumber(wn);
+		dto.setContent(dto.getContent().replaceAll("<br>", "\\r\\n"));	//줄바꿈 처리
+		
+		int index=dto.getFilename().indexOf("_");	//파일 이름 처리
+		dto.setFilename(dto.getFilename().substring(index));
+		
+		mav.addObject("dto", dto);
+		mav.setViewName("body/boardDetail.main");
+	}
 
 
 }

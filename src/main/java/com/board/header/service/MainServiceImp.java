@@ -65,6 +65,10 @@ public class MainServiceImp implements MainService {
 			list.get(i).setContent(content);
 		}
 		
+		//카테고리 이름 가져오기
+		String categoryname=headerDao.getCategoryName(categorynumber);
+		
+		mav.addObject("categoryname", categoryname);
 		mav.addObject("categorynumber", categorynumber);
 		mav.addObject("pageNumber", pageNumber);
 		mav.addObject("boardSize", boardSize);

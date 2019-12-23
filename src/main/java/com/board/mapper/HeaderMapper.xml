@@ -32,5 +32,9 @@
 		where rn between #{startRow} and #{endRow}
 	]]>
 	</select>
+	
+	<select id="getCategoryName" parameterType="int" resultType="String">
+		select categoryname from category where categorynumber=#{categorynumber}
+	</select>
 </mapper>
 

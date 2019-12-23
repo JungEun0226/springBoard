@@ -19,5 +19,7 @@ public interface BodyService {
 	void signupOk(ModelAndView mav);
 
 	void loginOk(ModelAndView mav);
+
+	void boardDetail(ModelAndView mav);
 	
 }

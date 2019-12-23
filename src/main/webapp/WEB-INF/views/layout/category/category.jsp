@@ -7,7 +7,6 @@
 <meta charset="UTF-8">
 <title>프로그래밍</title>
 <c:set var="root" value="${pageContext.request.contextPath}" />
-<script type="text/javascript" src="${root}/js/category.js"></script>
 </head>
 <body>
 <!-- Sidebar -->
@@ -67,6 +66,7 @@ function w3_close() {
   mySidebar.style.display = "none";
   overlayBg.style.display = "none";
 }
+
 </script>
 </body>
 </html>
