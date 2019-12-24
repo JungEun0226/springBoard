@@ -41,5 +41,19 @@
 	<update id="updateViews" parameterType="String">
 		update boardwrite set views=views+1 where writenumber=#{wn}
 	</update>
+	
+	<update id="updateWrite" parameterType="com.board.body.dto.BoardWriteDto">
+		update boardwrite
+		set categorynumber=#{categorynumber}, title=#{title}, content=#{content}, writedate=#{writedate}, filename=#{filename,jdbcType=VARCHAR}, filepath=#{filepath,jdbcType=VARCHAR}
+		where writenumber=#{writenumber}
+	</update>
+	
+	<delete id="deleteWrite" parameterType="String">
+		delete from boardwrite where writenumber=#{writenumber}
+	</delete>
+	
+	<select id="getFilePath" parameterType="String" resultType="String">
+		SELECT filepath FROM boardwrite WHERE writenumber=#{writenumber}
+	</select>
 </mapper>
 

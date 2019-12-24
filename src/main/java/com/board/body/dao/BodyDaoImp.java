@@ -67,5 +67,23 @@ public class BodyDaoImp implements BodyDao {
 		sqlSession.update(namespace+"updateViews", wn);
 	}
 
+	@Override
+	public void updateWrite(BoardWriteDto dto) {
+		// TODO Auto-generated method stub
+		sqlSession.update(namespace+"updateWrite", dto);
+	}
+
+	@Override
+	public void deleteWrite(String writenumber) {
+		// TODO Auto-generated method stub
+		sqlSession.delete(namespace+"deleteWrite", writenumber);
+	}
+
+	@Override
+	public String getFilePath(String writenumber) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+"getFilePath", writenumber);
+	}
+
 
 }

@@ -21,5 +21,7 @@ public interface BodyService {
 	void loginOk(ModelAndView mav);
 
 	void boardDetail(ModelAndView mav);
+
+	void deleteWrite(ModelAndView mav);
 	
 }

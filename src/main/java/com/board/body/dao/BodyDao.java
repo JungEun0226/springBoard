@@ -21,6 +21,12 @@ public interface BodyDao {
 
 	void updateViews(String wn);
 
+	void updateWrite(BoardWriteDto dto);
+
+	void deleteWrite(String writenumber);
+
+	String getFilePath(String writenumber);
+
 
 
 }

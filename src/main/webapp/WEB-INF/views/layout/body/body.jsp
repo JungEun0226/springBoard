@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>프로그래밍</title>
 <c:set var="root" value="${pageContext.request.contextPath}" />
-<script type="text/javascript" src="/spring/js/category.js"></script>
+<script type="text/javascript" src="${root }/js/boardList.js"></script>
 <style type="text/css">
 .w3-twothird {
 	width: 100%;
@@ -21,7 +21,7 @@
 	<div class="w3-main" style="margin-left: 250px">
 		<div class="w3-row w3-padding-64" style="padding-bottom: 35px !important;">
 			<div class="w3-twothird w3-container">
-				<h1 class="w3-text-teal" id="mainTitle">${categoryname }</h1>
+				<h1 class="w3-text-teal" id="mainTitle"></h1>
 			</div>
 		</div>
 		
@@ -35,7 +35,7 @@
 		<c:forEach var="listDto" items="${list}">
 			<div class="w3-row">
 				<div class="w3-twothird w3-container">
-					<a class="w3-text-teal" onclick="detailBoard(${listDto.writenumber})" style="font-size: 3rem; text-decoration: none;">${listDto.title}</a>
+					<a class="w3-text-teal" onclick="detailBoard('${root}', ${listDto.writenumber}, ${pageNumber})" style="font-size: 3rem; text-decoration: none;">${listDto.title}</a>
 					<p style="font-size: 20px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${listDto.content}</p>
 					<input type="hidden" value="${listDto.writenumber}" id="writenumber" />
 				</div>
@@ -58,27 +58,27 @@
 					</c:if>
 				</c:if>
 
-				<a class="w3-button w3-black" onclick="pagination(${categorynumber},${1})">««</a>
+				<a class="w3-button w3-black" onclick="pagination('${root}',${categorynumber},${1})">««</a>
 				<c:if test="${startPage>pageBlock }">
-					<a class="w3-button w3-black" onclick="pagination(${categorynumber},${startPage-pageBlock})">«</a>
+					<a class="w3-button w3-black" onclick="pagination('${root}',${categorynumber},${startPage-pageBlock})">«</a>
 				</c:if>
 
 				<c:forEach var="i" begin="${startPage}" end="${endPage}">
 					<c:choose>
 						<c:when test="${pageNumber==i}">
-							<a class="w3-button w3-black" style="background-color: gray; color: white;" onclick="pagination(${categorynumber},${i})">${i}</a>
+							<a class="w3-button w3-black" style="background-color: gray; color: white;" onclick="pagination('${root}',${categorynumber},${i})">${i}</a>
 						</c:when>
 						<c:otherwise>
-							<a class="w3-button w3-black" onclick="pagination(${categorynumber},${i})">${i}</a>
+							<a class="w3-button w3-black" onclick="pagination('${root}',${categorynumber},${i})">${i}</a>
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
 
 				<c:if test="${endPage<pageCount }">
-					<a class="w3-button w3-black" onclick="pagination(${categorynumber},${startPage+pageBlock})">»</a>
+					<a class="w3-button w3-black" onclick="pagination('${root}',${categorynumber},${startPage+pageBlock})">»</a>
 				</c:if>
 
-				<a class="w3-button w3-black" onclick="pagination(${categorynumber},${pageCount})">»»</a>
+				<a class="w3-button w3-black" onclick="pagination('${root}',${categorynumber},${pageCount})">»»</a>
 
 			</div>
 		</div>

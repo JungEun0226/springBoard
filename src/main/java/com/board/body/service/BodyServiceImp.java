@@ -134,6 +134,10 @@ public class BodyServiceImp implements BodyService {
 	public void boardWriteOk(ModelAndView mav) {
 		// TODO Auto-generated method stub
 		HttpServletRequest request=(HttpServletRequest)mav.getModel().get("request");
+		String writenumber=request.getParameter("writenumber");
+		
+		LogAspect.info(LogAspect.logMsg+"글번호: "+writenumber);
+		
 		Date date=new Date();
 		
 		//카테고리 이름으로 카테고리 번호 찾기
@@ -155,6 +159,12 @@ public class BodyServiceImp implements BodyService {
 				file=mpRequest.getFile(iter.next());
 				
 				if(file.isEmpty()==false) {
+					if(writenumber!=null) {		//원래 있던 파일 제거
+						String deletePath=bodyDao.getFilePath(writenumber);
+						File df=new File(deletePath);
+						if(df.exists())	df.delete();
+					}
+					
 					String name=System.currentTimeMillis()+"_"+file.getOriginalFilename();
 					dto.setFilename(name);
 					dto.setFilepath(path+name);
@@ -171,10 +181,18 @@ public class BodyServiceImp implements BodyService {
 		}
 		
 		//데이터베이스 등록
-		bodyDao.setBoardWrite(dto);
+		if(writenumber!=null) {	//글 수정, 파일수정시 원본파일삭제하고 수정된파일 넣어야함.
+			dto.setWritenumber(Integer.parseInt(writenumber));
+			bodyDao.updateWrite(dto);
+			mav.addObject("dto", dto);
+			mav.setViewName("body/boardDetail.main");
+			
+		}else {
+			bodyDao.setBoardWrite(dto);	//글 쓰기
+			mav.addObject("categorynumber",dto.getCategorynumber());
+			mav.setViewName("body/body.main");	
+		}
 		
-		mav.addObject("categorynumber",dto.getCategorynumber());
-		mav.setViewName("body/body.main");	
 		
 	}
 	
@@ -191,13 +209,28 @@ public class BodyServiceImp implements BodyService {
 		
 		//글 상세목록 dto로 받아오기
 		dto=bodyDao.getBoardDetailWriteNumber(wn);
-		dto.setContent(dto.getContent().replaceAll("<br>", "\\r\\n"));	//줄바꿈 처리
+		dto.setContent(dto.getContent().replaceAll("<br>", "\r\n"));	//줄바꿈 처리
 		
-		int index=dto.getFilename().indexOf("_");	//파일 이름 처리
-		dto.setFilename(dto.getFilename().substring(index));
+		if(dto.getFilename()!=null) {
+			int index=dto.getFilename().indexOf("_");	//파일 이름 처리
+			dto.setFilename(dto.getFilename().substring(index));
+		}
+		
 		
 		mav.addObject("dto", dto);
 		mav.setViewName("body/boardDetail.main");
+	}
+	
+	//글 삭제 후 메인화면으로 이동
+	@Override
+	public void deleteWrite(ModelAndView mav) {
+		// TODO Auto-generated method stub
+		HttpServletRequest request=(HttpServletRequest)mav.getModel().get("request");
+		String writenumber=request.getParameter("writenumber");
+		
+		bodyDao.deleteWrite(writenumber);
+		
+		mav.setViewName("body/body.main");
 	}
 
 

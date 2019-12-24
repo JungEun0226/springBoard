@@ -135,4 +135,25 @@ public class BodyController {
 		
 		return mav;
 	}
+	
+	//글 수정화면 이동 updateWrite.com
+	@RequestMapping(value = "/updateWrite.com", method = RequestMethod.GET)
+	public ModelAndView updateWrite(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mav=new ModelAndView();
+		mav.addObject("writenumber", request.getParameter("writenumber"));		
+		mav.setViewName("body/updateWrite.main");
+		
+		return mav;
+	}
+	
+	//글 삭제 & 메인화면으로 돌아가기
+	@RequestMapping(value = "/deleteWrite.com", method = RequestMethod.GET)
+	public ModelAndView deleteWrite(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mav=new ModelAndView();
+		mav.addObject("request", request);
+		
+		bodyService.deleteWrite(mav);
+		
+		return mav;
+	}
 }
