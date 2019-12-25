@@ -23,5 +23,7 @@ public interface BodyService {
 	void boardDetail(ModelAndView mav);
 
 	void deleteWrite(ModelAndView mav);
+
+	void downloadFile(ModelAndView mav) throws Exception;
 	
 }

@@ -35,11 +35,11 @@
 	</insert>
 	
 	<select id="getBoardDetailWriteNumber" parameterType="String" resultType="com.board.body.dto.BoardWriteDto">
-		select * from boardwrite where writenumber=#{wn}
+		select * from boardwrite where writenumber=#{writenumber}
 	</select>
 	
 	<update id="updateViews" parameterType="String">
-		update boardwrite set views=views+1 where writenumber=#{wn}
+		update boardwrite set views=views+1 where writenumber=#{writenumber}
 	</update>
 	
 	<update id="updateWrite" parameterType="com.board.body.dto.BoardWriteDto">
@@ -54,6 +54,23 @@
 	
 	<select id="getFilePath" parameterType="String" resultType="String">
 		SELECT filepath FROM boardwrite WHERE writenumber=#{writenumber}
+	</select>
+	
+	<select id="getReplyCount" parameterType="String" resultType="int">
+		select count(*) from reply where writenumber=#{writenumber}
+	</select>
+	
+	<select id="getReplyList" parameterType="java.util.HashMap" resultType="com.board.body.dto.ReplyDto">
+		<![CDATA[
+		SELECT *
+		FROM (SELECT ROWNUM AS rn, b.*
+		      FROM (SELECT * 
+		      		FROM reply 
+		      		where writenumber=#{writenumber} 
+		      		ORDER BY replynumber desc)b
+		      		)
+		where rn between #{startRow} and #{endRow}
+	]]>
 	</select>
 </mapper>
 

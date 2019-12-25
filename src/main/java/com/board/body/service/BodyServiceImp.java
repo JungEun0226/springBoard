@@ -3,12 +3,16 @@ package com.board.body.service;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +23,7 @@ import com.board.aop.LogAspect;
 import com.board.body.dao.BodyDao;
 import com.board.body.dto.BoardWriteDto;
 import com.board.body.dto.MemberDto;
+import com.board.body.dto.ReplyDto;
 
 /**
  * @author choi jung eun
@@ -136,7 +141,7 @@ public class BodyServiceImp implements BodyService {
 		HttpServletRequest request=(HttpServletRequest)mav.getModel().get("request");
 		String writenumber=request.getParameter("writenumber");
 		
-		LogAspect.info(LogAspect.logMsg+"글번호: "+writenumber);
+		//LogAspect.info(LogAspect.logMsg+"글번호: "+writenumber);
 		
 		Date date=new Date();
 		
@@ -184,16 +189,15 @@ public class BodyServiceImp implements BodyService {
 		if(writenumber!=null) {	//글 수정, 파일수정시 원본파일삭제하고 수정된파일 넣어야함.
 			dto.setWritenumber(Integer.parseInt(writenumber));
 			bodyDao.updateWrite(dto);
-			mav.addObject("dto", dto);
-			mav.setViewName("body/boardDetail.main");
-			
 		}else {
 			bodyDao.setBoardWrite(dto);	//글 쓰기
-			mav.addObject("categorynumber",dto.getCategorynumber());
-			mav.setViewName("body/body.main");	
 		}
 		
+		int index=dto.getFilename().indexOf("_");
+		dto.setFilename(dto.getFilename().substring(index+1));
 		
+		mav.addObject("dto", dto);
+		mav.setViewName("body/boardDetail.main");
 	}
 	
 	//글 상세화면 보기
@@ -201,23 +205,61 @@ public class BodyServiceImp implements BodyService {
 	public void boardDetail(ModelAndView mav) {
 		// TODO Auto-generated method stub
 		HttpServletRequest request=(HttpServletRequest)mav.getModel().get("request");
-		BoardWriteDto dto=null;
-		String wn=request.getParameter("writenumber");
+		BoardWriteDto boardDto=null;
+		String writenumber=request.getParameter("writenumber");
+		String downFilePath="";
 		
 		//조회수 증가 처리
-		bodyDao.updateViews(wn);
+		bodyDao.updateViews(writenumber);
 		
 		//글 상세목록 dto로 받아오기
-		dto=bodyDao.getBoardDetailWriteNumber(wn);
-		dto.setContent(dto.getContent().replaceAll("<br>", "\r\n"));	//줄바꿈 처리
+		boardDto=bodyDao.getBoardDetailWriteNumber(writenumber);
+		boardDto.setContent(boardDto.getContent().replaceAll("<br>", "\r\n"));	//줄바꿈 처리
 		
-		if(dto.getFilename()!=null) {
-			int index=dto.getFilename().indexOf("_");	//파일 이름 처리
-			dto.setFilename(dto.getFilename().substring(index));
+		if(boardDto.getFilename()!=null) {
+			int index=boardDto.getFilename().indexOf("_");	//파일 이름 처리
+			downFilePath=boardDto.getFilename();
+			boardDto.setFilename(boardDto.getFilename().substring(index+1));
 		}
 		
 		
-		mav.addObject("dto", dto);
+		//글번호로 댓글 받아오기 + 페이지기능
+		String pn=request.getParameter("pageNumber");
+		if(pn==null)	pn="1";
+		int pageNumber=Integer.parseInt(pn);
+		int boardSize=3;
+		int startRow=(pageNumber-1)*boardSize+1;
+		int endRow=pageNumber*boardSize;
+		int count=0;
+		
+		HashMap<String, Object> map=new HashMap<String, Object>();
+		map.put("startRow", startRow);
+		map.put("endRow", endRow);
+		map.put("writenumber", writenumber);
+		
+		List<ReplyDto> list=null;
+		count=bodyDao.getReplyCount(writenumber);
+		
+		if(count>0) {
+			list=bodyDao.getReplyList(map);
+
+			for(int i=0;i<list.size();i++) {	//줄바꿈 처리
+				String content=list.get(i).getReplycontent().replaceAll("<br>", "\r\n");
+				list.get(i).setReplycontent(content);
+			}
+		}
+
+		
+		mav.addObject("pageNumber", pageNumber);
+		mav.addObject("boardSize", boardSize);
+		mav.addObject("startRow", startRow);
+		mav.addObject("endRow", endRow);
+		mav.addObject("count", count);
+		mav.addObject("list", list);
+		
+		mav.addObject("downFilePath", downFilePath);
+		mav.addObject("boardDto", boardDto);
+		
 		mav.setViewName("body/boardDetail.main");
 	}
 	
@@ -231,6 +273,30 @@ public class BodyServiceImp implements BodyService {
 		bodyDao.deleteWrite(writenumber);
 		
 		mav.setViewName("body/body.main");
+	}
+	
+	//파일 다운로드
+	@Override
+	public void downloadFile(ModelAndView mav) throws Exception{
+		// TODO Auto-generated method stub
+		HttpServletRequest request=(HttpServletRequest)mav.getModel().get("request");
+		HttpServletResponse response=(HttpServletResponse)mav.getModel().get("response");
+		
+		String downFilePath=request.getParameter("downFilePath");
+		int index=downFilePath.indexOf("_");
+		String path="C:\\Users\\choi\\Desktop\\";
+		//LogAspect.info(LogAspect.logMsg+downFilePath);
+		
+		byte fileByte[]=FileUtils.readFileToByteArray(new File(path+downFilePath));	//파일 저장경로에서 읽어와 바이트 배열 형태로 변환해주는 함수
+		
+		response.setContentType("application/octet-stream");
+		response.setContentLength(fileByte.length);
+		response.setHeader("Content-Disposition", "attachment; fileName=\""+URLEncoder.encode(downFilePath.substring(index+1), "UTF-8")+"\";"); //attachment는 첨부파일을 의미, URLEncoder는 첨부파일의 이름지정
+		response.setHeader("Content-Transfer-Encoding", "binary");
+		response.getOutputStream().write(fileByte);
+		
+		response.getOutputStream().flush();
+		response.getOutputStream().close();
 	}
 
 

@@ -1,11 +1,15 @@
 package com.board.body.dao;
 
+import java.util.HashMap;
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.board.body.dto.BoardWriteDto;
 import com.board.body.dto.MemberDto;
+import com.board.body.dto.ReplyDto;
 
 /**
  * @author choi jung eun
@@ -56,15 +60,15 @@ public class BodyDaoImp implements BodyDao {
 	}
 
 	@Override
-	public BoardWriteDto getBoardDetailWriteNumber(String wn) {
+	public BoardWriteDto getBoardDetailWriteNumber(String writenumber) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne(namespace+"getBoardDetailWriteNumber", wn);
+		return sqlSession.selectOne(namespace+"getBoardDetailWriteNumber", writenumber);
 	}
 
 	@Override
-	public void updateViews(String wn) {
+	public void updateViews(String writenumber) {
 		// TODO Auto-generated method stub
-		sqlSession.update(namespace+"updateViews", wn);
+		sqlSession.update(namespace+"updateViews", writenumber);
 	}
 
 	@Override
@@ -83,6 +87,18 @@ public class BodyDaoImp implements BodyDao {
 	public String getFilePath(String writenumber) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(namespace+"getFilePath", writenumber);
+	}
+
+	@Override
+	public int getReplyCount(String writenumber) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+"getReplyCount", writenumber);
+	}
+
+	@Override
+	public List<ReplyDto> getReplyList(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("getReplyList", map);
 	}
 
 
