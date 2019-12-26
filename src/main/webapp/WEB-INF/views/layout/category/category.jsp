@@ -23,7 +23,7 @@
 		<c:otherwise>
 			<p class="w3-bar-item" style="margin-top:5px; ">${memberid}님 환영합니다!</p>
 			<a class="w3-bar-item w3-button w3-hover-black" href="${root}/logout.com">로그아웃</a>
-			<a class="w3-bar-item w3-button w3-hover-black" href="#">마이페이지</a>
+			<a class="w3-bar-item w3-button w3-hover-black" href="${root}/mypage.com">마이페이지</a>
 			<a class="w3-bar-item w3-button w3-hover-black" href="${root}/boardWrite.com">글쓰기</a>
 		</c:otherwise>
 	</c:choose>

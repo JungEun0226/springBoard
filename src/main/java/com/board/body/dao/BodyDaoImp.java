@@ -98,8 +98,33 @@ public class BodyDaoImp implements BodyDao {
 	@Override
 	public List<ReplyDto> getReplyList(HashMap<String, Object> map) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList("getReplyList", map);
+		return sqlSession.selectList(namespace+"getReplyList", map);
 	}
+
+	@Override
+	public String getMemberId(int membernumber) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+"getMemberId", membernumber);
+	}
+
+	@Override
+	public void insertReplyWrite(ReplyDto rDto) {
+		// TODO Auto-generated method stub
+		sqlSession.insert(namespace+"insertReplyWrite", rDto);
+	}
+
+	@Override
+	public void passwordUpdate(HashMap<String, String> map) {
+		// TODO Auto-generated method stub
+		sqlSession.update(namespace+"passwordUpdate",map);
+	}
+
+	@Override
+	public void deleteMember(String membernumber) {
+		// TODO Auto-generated method stub
+		sqlSession.delete(namespace+"deleteMember",membernumber);
+	}
+
 
 
 }

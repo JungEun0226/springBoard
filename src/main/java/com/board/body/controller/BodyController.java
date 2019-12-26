@@ -179,4 +179,43 @@ public class BodyController {
 		
 		return null;
 	}
+	
+	//댓글 등록 /replyWrite.com
+	@RequestMapping(value = "/replyWrite.com", method = RequestMethod.POST)
+	public ModelAndView replyWrite(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ModelAndView mav=new ModelAndView();
+		mav.addObject("request", request);
+		mav.addObject("response",response);
+		
+		bodyService.replyWrite(mav);
+		
+		return null;
+	}
+	
+	//마이페이지 - 회원탈퇴 비밀번호수정 가능 /mypage.com
+	@RequestMapping(value = "/mypage.com", method = RequestMethod.GET)
+	public String mypage() {
+		return "body/mypage.main";
+	}
+	
+	//마이페이지-비밀번호수정
+	@RequestMapping(value = "/passwordUpdate.com", method = RequestMethod.POST)
+	public ModelAndView passwordUpdate(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mav=new ModelAndView();
+		mav.addObject("request", request);
+		
+		bodyService.passwordUpdate(mav);
+		
+		return null;
+	}
+	
+	//마이페이지-회원탈퇴 /deleteMember.com
+	@RequestMapping(value = "/deleteMember.com", method = RequestMethod.GET)
+	public String deleteMember(HttpSession  session) {
+		
+		bodyService.deleteMember(session);
+		
+		
+		return "body/login.main";
+	}
 }

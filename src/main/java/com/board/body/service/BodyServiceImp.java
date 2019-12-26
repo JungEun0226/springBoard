@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,8 +12,11 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -297,6 +301,126 @@ public class BodyServiceImp implements BodyService {
 		
 		response.getOutputStream().flush();
 		response.getOutputStream().close();
+	}
+	
+	//댓글 등록
+	@SuppressWarnings("unchecked")
+	@Override
+	public void replyWrite(ModelAndView mav) {
+		// TODO Auto-generated method stub
+		HttpServletRequest request=(HttpServletRequest) mav.getModel().get("request");
+		HttpServletResponse response=(HttpServletResponse) mav.getModel().get("response");
+		String writenumber=request.getParameter("writenumber");
+		
+		ReplyDto rDto=new ReplyDto();
+		Date date=new Date();
+				
+		rDto.setReplycontent(request.getParameter("reply"));
+		rDto.setMembernumber(Integer.parseInt(request.getParameter("membernumber")));
+		rDto.setWritenumber(Integer.parseInt(writenumber));
+		rDto.setMemberid(bodyDao.getMemberId(rDto.getMembernumber()));
+		rDto.setReplydate(date);
+		
+		
+		//데이터베이스에 저장
+		bodyDao.insertReplyWrite(rDto);
+		
+		//밑에 뿌려줄 정보와 페이징 기능 까지
+		String pn=request.getParameter("pageNumber");
+		if(pn==null)	pn="1";
+		int pageNumber=Integer.parseInt(pn);
+		int boardSize=3;
+		int startRow=(pageNumber-1)*boardSize+1;
+		int endRow=pageNumber*boardSize;
+		int count=0;
+		
+		HashMap<String, Object> map=new HashMap<String, Object>();
+		map.put("startRow", startRow);
+		map.put("endRow", endRow);
+		map.put("writenumber", writenumber);
+		
+		List<ReplyDto> list=null;
+
+		count=bodyDao.getReplyCount(writenumber);
+		ArrayList<Object> arr=new ArrayList<Object>();
+		
+		if(count>0) {
+			list=bodyDao.getReplyList(map);
+
+			for(int i=0;i<list.size();i++) {	//줄바꿈 처리
+				String content=list.get(i).getReplycontent().replaceAll("<br>", "\r\n");
+				list.get(i).setReplycontent(content);
+				
+				
+				HashMap<String,Object> h=new HashMap<String,Object>();
+				h.put("membernumber", list.get(i).getMembernumber());
+				h.put("memberid", list.get(i).getMemberid());
+				h.put("writenumber", list.get(i).getWritenumber());
+				h.put("replynumber", list.get(i).getReplynumber());
+				h.put("replycontent", list.get(i).getReplycontent());
+				h.put("replydate", list.get(i).getReplydate());
+				
+				arr.add(h);
+			}
+		}
+		
+		/*JSONObject obj = new JSONObject();
+
+		obj.put("pageNumber", pageNumber);
+		obj.put("boardSize", boardSize);
+		obj.put("startRow", startRow);
+		obj.put("endRow", endRow);
+		obj.put("count", count);
+		obj.put("list", list);*/
+		
+		HashMap<String, Object> json=new HashMap<String, Object>();
+		json.put("pageNumber", pageNumber);
+		json.put("boardSize", boardSize);
+		json.put("startRow", startRow);
+		json.put("endRow", endRow);
+		json.put("count", count);
+		json.put("list", arr);
+		
+		String text=JSONValue.toJSONString(json);
+		
+		response.setContentType("application/x-json; charset=utf-8");
+		PrintWriter out;
+		try {
+			out = response.getWriter();
+			out.print(text);
+			out.flush();
+			LogAspect.info(LogAspect.logMsg+text);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//마이페이지-패스워드 수정
+	@Override
+	public void passwordUpdate(ModelAndView mav) {
+		// TODO Auto-generated method stub
+		HttpServletRequest request=(HttpServletRequest) mav.getModel().get("request");
+		String membernumber=request.getParameter("membernumber");
+		String memberPassword=request.getParameter("memberPassword");
+		
+		HashMap<String, String> map=new HashMap<String, String>();
+		map.put("membernumber", membernumber);
+		map.put("memberPassword", memberPassword);
+		
+		bodyDao.passwordUpdate(map);
+		
+	}
+	
+	//마이페이지-회원탈퇴
+	@Override
+	public void deleteMember(HttpSession session) {
+		// TODO Auto-generated method stub
+		String membernumber=(String) session.getAttribute("membernumber");
+		LogAspect.info(LogAspect.logMsg+membernumber);
+		
+		session.invalidate();
+		
+		bodyDao.deleteMember(membernumber);
 	}
 
 

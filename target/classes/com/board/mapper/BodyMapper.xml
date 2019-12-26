@@ -70,7 +70,25 @@
 		      		ORDER BY replynumber desc)b
 		      		)
 		where rn between #{startRow} and #{endRow}
-	]]>
+		]]>
 	</select>
+	
+	<select id="getMemberId" parameterType="int" resultType="String">
+		select memberid from member where membernumber=#{membernumber}
+	</select>
+	
+	<insert id="insertReplyWrite" parameterType="com.board.body.dto.ReplyDto">
+		<![CDATA[
+			insert into reply values(#{membernumber}, #{memberid}, #{writenumber}, replynumber_seq.nextval, #{replycontent}, #{replydate})
+		]]>
+	</insert>
+	
+	<update id="passwordUpdate" parameterType="java.util.HashMap">
+		update member set memberpass=#{memberPassword} where membernumber=#{membernumber}
+	</update>
+	
+	<delete id="deleteMember" parameterType="String">
+		delete from member where membernumber=#{membernumber}
+	</delete>
 </mapper>
 

@@ -14,6 +14,7 @@
 	<c:if test="${membernumber!=null}">
 		<input type="hidden" value="${membernumber}" id="membernumber"/>	
 	</c:if>
+	<input type="hidden" value="${boardDto.writenumber}" id="writenumber"/>
 	
 	<c:set var="boardDto" value="${boardDto}"></c:set>
 	<div class="w3-main" style="margin-left: 250px">
@@ -61,6 +62,7 @@
 		<hr>
 		
 		<!-- 댓글 로그인한 사람에게만 허용-->
+		<input type="hidden" value="${pageNumber}" id="pageNumber"/>
 		<c:choose>
 			<c:when test="${membernumber==null}">
 				<div class="w3-row">
@@ -70,6 +72,7 @@
 				</div>
 			</c:when>
 			<c:otherwise>
+				<div id="newReply"></div>
 				<div class="w3-row">
 					<div class="w3-twothird w3-container col-9" style="display: inline-flex;">
 						<input type="text" class="form-control" id="reply" style="font-size: 20px; margin-right: 30px;">
@@ -105,7 +108,8 @@
 				</c:forEach>
 				
 				<!-- replyPagination -->
-				<div class="w3-center w3-padding-32">
+				<div id="paginationAfter"></div>
+				<div class="w3-center w3-padding-32" style="display:block;" id="paginationBefore">
 					<div class="w3-bar">
 						<c:if test="${count>0}">
 							<fmt:parseNumber var="pageCount" value="${count/boardSize+(count%boardSize==0? 0:1)}" integerOnly="true" />

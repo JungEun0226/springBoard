@@ -35,6 +35,15 @@ public interface BodyDao {
 
 	List<ReplyDto> getReplyList(HashMap<String, Object> map);
 
+	String getMemberId(int membernumber);
+
+	void insertReplyWrite(ReplyDto rDto);
+
+	void passwordUpdate(HashMap<String, String> map);
+
+	void deleteMember(String membernumber);
+
+
 
 
 }
