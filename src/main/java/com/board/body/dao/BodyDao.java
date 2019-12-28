@@ -43,6 +43,8 @@ public interface BodyDao {
 
 	void deleteMember(String membernumber);
 
+	int getWriteNumber();
+
 
 
 

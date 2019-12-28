@@ -125,6 +125,12 @@ public class BodyDaoImp implements BodyDao {
 		sqlSession.delete(namespace+"deleteMember",membernumber);
 	}
 
+	@Override
+	public int getWriteNumber() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+"getWriteNumber");
+	}
+
 
 
 }

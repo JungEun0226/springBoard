@@ -90,5 +90,10 @@
 	<delete id="deleteMember" parameterType="String">
 		delete from member where membernumber=#{membernumber}
 	</delete>
+	
+	<select id="getWriteNumber" resultType="int">
+		select writenumber from boardwrite where writedate=(select max(writedate) from boardwrite)
+	</select>
+	
 </mapper>
 

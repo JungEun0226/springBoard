@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
-import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -144,8 +144,9 @@ public class BodyServiceImp implements BodyService {
 		// TODO Auto-generated method stub
 		HttpServletRequest request=(HttpServletRequest)mav.getModel().get("request");
 		String writenumber=request.getParameter("writenumber");
+		String cate=request.getParameter("categoryname");
 		
-		//LogAspect.info(LogAspect.logMsg+"글번호: "+writenumber);
+		LogAspect.info(LogAspect.logMsg+"글번호: "+writenumber+"카테-"+cate);
 		
 		Date date=new Date();
 		
@@ -164,15 +165,18 @@ public class BodyServiceImp implements BodyService {
 		String path="C:\\Users\\choi\\Desktop\\";
 		
 		try {
+			if(writenumber!=null) {		//원래 있던 파일 제거
+				String deletePath=bodyDao.getFilePath(writenumber);
+				if(deletePath!=null) {	//첨부파일삭제
+					File df=new File(deletePath);
+					if(df.exists())	df.delete();
+				}
+			}
+			
 			while(iter.hasNext()) {
 				file=mpRequest.getFile(iter.next());
 				
 				if(file.isEmpty()==false) {
-					if(writenumber!=null) {		//원래 있던 파일 제거
-						String deletePath=bodyDao.getFilePath(writenumber);
-						File df=new File(deletePath);
-						if(df.exists())	df.delete();
-					}
 					
 					String name=System.currentTimeMillis()+"_"+file.getOriginalFilename();
 					dto.setFilename(name);
@@ -182,7 +186,7 @@ public class BodyServiceImp implements BodyService {
 					file.transferTo(f);
 				}
 				
-				LogAspect.info(LogAspect.logMsg+dto.toString());
+				//LogAspect.info(LogAspect.logMsg+dto.toString());
 			}
 			
 		}catch(Exception e) {
@@ -195,12 +199,15 @@ public class BodyServiceImp implements BodyService {
 			bodyDao.updateWrite(dto);
 		}else {
 			bodyDao.setBoardWrite(dto);	//글 쓰기
+			dto.setWritenumber(bodyDao.getWriteNumber());
 		}
 		
-		int index=dto.getFilename().indexOf("_");
-		dto.setFilename(dto.getFilename().substring(index+1));
+		if(dto.getFilename()!=null) {
+			int index=dto.getFilename().indexOf("_");
+			dto.setFilename(dto.getFilename().substring(index+1));			
+		}
 		
-		mav.addObject("dto", dto);
+		mav.addObject("boardDto", dto);
 		mav.setViewName("body/boardDetail.main");
 	}
 	
@@ -225,42 +232,7 @@ public class BodyServiceImp implements BodyService {
 			downFilePath=boardDto.getFilename();
 			boardDto.setFilename(boardDto.getFilename().substring(index+1));
 		}
-		
-		
-		//글번호로 댓글 받아오기 + 페이지기능
-		String pn=request.getParameter("pageNumber");
-		if(pn==null)	pn="1";
-		int pageNumber=Integer.parseInt(pn);
-		int boardSize=3;
-		int startRow=(pageNumber-1)*boardSize+1;
-		int endRow=pageNumber*boardSize;
-		int count=0;
-		
-		HashMap<String, Object> map=new HashMap<String, Object>();
-		map.put("startRow", startRow);
-		map.put("endRow", endRow);
-		map.put("writenumber", writenumber);
-		
-		List<ReplyDto> list=null;
-		count=bodyDao.getReplyCount(writenumber);
-		
-		if(count>0) {
-			list=bodyDao.getReplyList(map);
 
-			for(int i=0;i<list.size();i++) {	//줄바꿈 처리
-				String content=list.get(i).getReplycontent().replaceAll("<br>", "\r\n");
-				list.get(i).setReplycontent(content);
-			}
-		}
-
-		
-		mav.addObject("pageNumber", pageNumber);
-		mav.addObject("boardSize", boardSize);
-		mav.addObject("startRow", startRow);
-		mav.addObject("endRow", endRow);
-		mav.addObject("count", count);
-		mav.addObject("list", list);
-		
 		mav.addObject("downFilePath", downFilePath);
 		mav.addObject("boardDto", boardDto);
 		
@@ -273,6 +245,12 @@ public class BodyServiceImp implements BodyService {
 		// TODO Auto-generated method stub
 		HttpServletRequest request=(HttpServletRequest)mav.getModel().get("request");
 		String writenumber=request.getParameter("writenumber");
+		
+		String deletePath=bodyDao.getFilePath(writenumber);
+		if(deletePath!=null) {	//첨부파일삭제
+			File df=new File(deletePath);
+			if(df.exists())	df.delete();
+		}
 		
 		bodyDao.deleteWrite(writenumber);
 		
@@ -303,31 +281,16 @@ public class BodyServiceImp implements BodyService {
 		response.getOutputStream().close();
 	}
 	
-	//댓글 등록
-	@SuppressWarnings("unchecked")
+	//댓글 리스트
 	@Override
-	public void replyWrite(ModelAndView mav) {
+	public void replyList(ModelAndView mav) {
 		// TODO Auto-generated method stub
 		HttpServletRequest request=(HttpServletRequest) mav.getModel().get("request");
 		HttpServletResponse response=(HttpServletResponse) mav.getModel().get("response");
 		String writenumber=request.getParameter("writenumber");
-		
-		ReplyDto rDto=new ReplyDto();
-		Date date=new Date();
-				
-		rDto.setReplycontent(request.getParameter("reply"));
-		rDto.setMembernumber(Integer.parseInt(request.getParameter("membernumber")));
-		rDto.setWritenumber(Integer.parseInt(writenumber));
-		rDto.setMemberid(bodyDao.getMemberId(rDto.getMembernumber()));
-		rDto.setReplydate(date);
-		
-		
-		//데이터베이스에 저장
-		bodyDao.insertReplyWrite(rDto);
-		
-		//밑에 뿌려줄 정보와 페이징 기능 까지
 		String pn=request.getParameter("pageNumber");
-		if(pn==null)	pn="1";
+		
+		if(pn==null || pn=="")	pn="1";
 		int pageNumber=Integer.parseInt(pn);
 		int boardSize=3;
 		int startRow=(pageNumber-1)*boardSize+1;
@@ -343,6 +306,7 @@ public class BodyServiceImp implements BodyService {
 
 		count=bodyDao.getReplyCount(writenumber);
 		ArrayList<Object> arr=new ArrayList<Object>();
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
 		if(count>0) {
 			list=bodyDao.getReplyList(map);
@@ -358,21 +322,12 @@ public class BodyServiceImp implements BodyService {
 				h.put("writenumber", list.get(i).getWritenumber());
 				h.put("replynumber", list.get(i).getReplynumber());
 				h.put("replycontent", list.get(i).getReplycontent());
-				h.put("replydate", list.get(i).getReplydate());
+				h.put("replydate", sdf.format(list.get(i).getReplydate()));
 				
 				arr.add(h);
 			}
 		}
-		
-		/*JSONObject obj = new JSONObject();
 
-		obj.put("pageNumber", pageNumber);
-		obj.put("boardSize", boardSize);
-		obj.put("startRow", startRow);
-		obj.put("endRow", endRow);
-		obj.put("count", count);
-		obj.put("list", list);*/
-		
 		HashMap<String, Object> json=new HashMap<String, Object>();
 		json.put("pageNumber", pageNumber);
 		json.put("boardSize", boardSize);
@@ -389,10 +344,33 @@ public class BodyServiceImp implements BodyService {
 			out = response.getWriter();
 			out.print(text);
 			out.flush();
-			LogAspect.info(LogAspect.logMsg+text);
+			//LogAspect.info(LogAspect.logMsg+text);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+	}
+
+	
+	//댓글 등록
+	@Override
+	public void replyWrite(ModelAndView mav) {
+		// TODO Auto-generated method stub
+		HttpServletRequest request=(HttpServletRequest) mav.getModel().get("request");
+		String writenumber=request.getParameter("writenumber");
+		
+		ReplyDto rDto=new ReplyDto();
+		Date date=new Date();
+				
+		rDto.setReplycontent(request.getParameter("reply"));
+		rDto.setMembernumber(Integer.parseInt(request.getParameter("membernumber")));
+		rDto.setWritenumber(Integer.parseInt(writenumber));
+		rDto.setMemberid(bodyDao.getMemberId(rDto.getMembernumber()));
+		rDto.setReplydate(date);
+		
+		
+		//데이터베이스에 저장
+		bodyDao.insertReplyWrite(rDto);
 	}
 	
 	//마이페이지-패스워드 수정
@@ -422,6 +400,5 @@ public class BodyServiceImp implements BodyService {
 		
 		bodyDao.deleteMember(membernumber);
 	}
-
 
 }

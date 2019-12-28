@@ -96,17 +96,11 @@ public class BodyController {
 	
 	//로그아웃 처리
 	@RequestMapping(value = "/logout.com", method = RequestMethod.GET)
-	public void logout(HttpSession session, HttpServletResponse response) throws IOException {
+	public String logout(HttpSession session, HttpServletResponse response) throws IOException {
 		//세션 초기화
 		session.invalidate();
 		
-		response.setContentType("text/html;charset=utf-8");
-		PrintWriter out=response.getWriter();
-		out.println("<script>");
-		out.println("location.href=document.referrer");
-		out.println("</script>");
-		out.close();
-		
+		return "body/body.main";
 	}
 	
 	//글쓰기 페이지
@@ -116,15 +110,12 @@ public class BodyController {
 		return "body/boardWrite.main";
 	}
 	
-	//글쓰기 등록
+	//글쓰기 등록, 수정
 	@RequestMapping(value = "/boardWriteOk.com", method = RequestMethod.POST)
 	public ModelAndView boardWriteOk(HttpServletRequest request, HttpServletResponse response) {
 		//로그인 정보 가지고 와서 아이디 가져가야함
 		ModelAndView mav=new ModelAndView();
 		mav.addObject("request", request);
-		
-		//String c=request.getParameter("categorySelect");
-		//LogAspect.info(LogAspect.logMsg+"글쓰기등록"+c);
 		
 		bodyService.boardWriteOk(mav);
 		
@@ -133,7 +124,6 @@ public class BodyController {
 	}
 	
 	//글 상세화면 이동 
-	@ResponseBody
 	@RequestMapping(value = "/boardDetail.com", method = RequestMethod.GET)
 	public ModelAndView boardDetail(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mav=new ModelAndView();
@@ -143,16 +133,6 @@ public class BodyController {
 		
 		bodyService.boardDetail(mav);
 		
-		
-		return mav;
-	}
-	
-	//글 수정화면 이동 updateWrite.com
-	@RequestMapping(value = "/updateWrite.com", method = RequestMethod.GET)
-	public ModelAndView updateWrite(HttpServletRequest request, HttpServletResponse response) {
-		ModelAndView mav=new ModelAndView();
-		mav.addObject("writenumber", request.getParameter("writenumber"));		
-		mav.setViewName("body/updateWrite.main");
 		
 		return mav;
 	}
@@ -180,7 +160,20 @@ public class BodyController {
 		return null;
 	}
 	
+	//댓글리스트 받아오기 /replyList.com
+	@RequestMapping(value = "/replyList.com", method = RequestMethod.POST)
+	public ModelAndView replyList(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ModelAndView mav=new ModelAndView();
+		mav.addObject("request", request);
+		mav.addObject("response",response);
+		
+		bodyService.replyList(mav);
+		
+		return null;
+	}
+	
 	//댓글 등록 /replyWrite.com
+	@ResponseBody
 	@RequestMapping(value = "/replyWrite.com", method = RequestMethod.POST)
 	public ModelAndView replyWrite(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ModelAndView mav=new ModelAndView();
@@ -192,7 +185,7 @@ public class BodyController {
 		return null;
 	}
 	
-	//마이페이지 - 회원탈퇴 비밀번호수정 가능 /mypage.com
+	//마이페이지 
 	@RequestMapping(value = "/mypage.com", method = RequestMethod.GET)
 	public String mypage() {
 		return "body/mypage.main";

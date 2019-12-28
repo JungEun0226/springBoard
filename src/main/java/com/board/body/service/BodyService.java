@@ -1,5 +1,6 @@
 package com.board.body.service;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.ModelAndView;
@@ -27,7 +28,9 @@ public interface BodyService {
 	void deleteWrite(ModelAndView mav);
 
 	void downloadFile(ModelAndView mav) throws Exception;
-
+	
+	void replyList(ModelAndView mav);
+	
 	void replyWrite(ModelAndView mav);
 
 	void passwordUpdate(ModelAndView mav);

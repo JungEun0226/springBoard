@@ -7,17 +7,16 @@
 <meta charset="UTF-8">
 <title>프로그래밍</title>
 <c:set var="root" value="${pageContext.request.contextPath}" />
-<script type="text/javascript" src="${root}/js/boardDetail.js"></script>
+<script type="text/javascript" src="${root}/js/detail.js"></script>
 </head>
 <body>
 	<input type="hidden" value="${root}" id="root" />
 	<c:if test="${membernumber!=null}">
 		<input type="hidden" value="${membernumber}" id="membernumber"/>	
 	</c:if>
-	<input type="hidden" value="${boardDto.writenumber}" id="writenumber"/>
 	
-	<c:set var="boardDto" value="${boardDto}"></c:set>
-	<div class="w3-main" style="margin-left: 250px">
+	<c:set var="boardDto" value="${boardDto}"/>
+	<div class="w3-main" style="margin-left: 250px; display: block;" id="detailForm">
 		<div class="w3-row" style="margin-top: 100px;">
 			<div class="w3-twothird w3-container col-3">
 				<a class="w3-text-teal" style="font-size: 3rem; text-decoration: none;">작성일:</a>
@@ -55,14 +54,14 @@
 		<div class="w3-row" style="margin-top: 50px; margin-bottom: 30px; font-size: 20px; padding-left: 15px;">
 			<a href="${root}/main.com?categorynumber=${boardDto.categorynumber}" class="w3-button" style="border-style: double; border-color: darkgrey;" id="goList">목록으로</a>
 			<c:if test="${membernumber==boardDto.membernumber}">
-				<a href="${root}/updateWrite.com?writenumber=${boardDto.writenumber}" class="w3-button" style="border-style: double; border-color: darkgrey;" id="boardWriteUpdate">글수정</a>
+				<a onclick="update()" class="w3-button" style="border-style: double; border-color: darkgrey;" id="boardWriteUpdate">글수정</a>
 				<a href="${root}/deleteWrite.com?writenumber=${boardDto.writenumber}" class="w3-button" style="border-style: double; border-color: darkgrey;" id="boardWriteDelete">글삭제</a>
 			</c:if>
-		</div>
+		</div>	
+		
 		<hr>
 		
 		<!-- 댓글 로그인한 사람에게만 허용-->
-		<input type="hidden" value="${pageNumber}" id="pageNumber"/>
 		<c:choose>
 			<c:when test="${membernumber==null}">
 				<div class="w3-row">
@@ -72,86 +71,72 @@
 				</div>
 			</c:when>
 			<c:otherwise>
-				<div id="newReply"></div>
-				<div class="w3-row">
+				<div class="w3-row" style="margin: 20px 0px;">
 					<div class="w3-twothird w3-container col-9" style="display: inline-flex;">
 						<input type="text" class="form-control" id="reply" style="font-size: 20px; margin-right: 30px;">
 						<input id="replyButton" type="button" value="댓글등록" class="btn btn-primary" style="position:relative; top:-3px; font-size: 20px; color: black; background-color: #f0f0f0 !important; border-color: lightgrey;"/>
 					</div>
 				</div>
 				
+				<!-- 댓글리스트 -->
 				<div class="w3-row" id="newReply"></div>
 				
-				<c:forEach var="replyDto" items="${list}">
-					<hr>
-					<div class="w3-row">
-						<div class="w3-twothird w3-container col-2" style="margin-bottom: 10px;">
-							<span style="font-size: 20px; margin-right: 30px;">${replyDto.memberid }</span>
-							<span style="font-size: 20px; margin-right: 15px;">작성일 : </span>
-							<fmt:formatDate value="${replyDto.replydate }" var="replyDate" pattern="yyyy-MM-dd HH:mm:ss"/>
-							<span style="font-size: 20px; margin-right: 15px;">${replyDate}</span>
-							
-							<c:if test="${membernumber==replyDto.membernumber}">
-								<span style="font-size: 20px; margin-right: 15px;">|| 수정</span>
-								<span style="font-size: 20px;">|| 삭제</span>
-							</c:if>
-						</div>
-						<div class="w3-twothird w3-container col-9" style="margin-bottom: 10px;">
-							<p style="font-size: 20px; margin-right: 30px;">${replyDto.replycontent }</p>
-							<div style="display: inline-flex;">
-								<input type="text" class="form-control" id="replyUpdate" style="font-size: 20px; margin-right: 30px; display: none;" value="${replyDto.replycontent}">
-								<input id="replyButton" type="button" value="댓글수정" class="btn btn-primary" style="position:relative; top:-3px; font-size: 20px; color: black; background-color: #f0f0f0 !important; border-color: lightgrey; display: none;"/>
-							</div>
-						</div>
-					</div>
-					<hr>
-				</c:forEach>
-				
 				<!-- replyPagination -->
-				<div id="paginationAfter"></div>
-				<div class="w3-center w3-padding-32" style="display:block;" id="paginationBefore">
-					<div class="w3-bar">
-						<c:if test="${count>0}">
-							<fmt:parseNumber var="pageCount" value="${count/boardSize+(count%boardSize==0? 0:1)}" integerOnly="true" />
-							<c:set var="pageBlock" value="${10}" />
-		
-							<fmt:parseNumber var="rs" value="${(pageNumber-1)/pageBlock}" integerOnly="true" />
-							<c:set var="startPage" value="${rs*pageBlock+1}" />
-							<c:set var="endPage" value="${startPage+pageBlock-1 }" />
-		
-							<c:if test="${endPage>pageCount }">
-								<c:set var="endPage" value="${pageCount}" />
-							</c:if>
-						</c:if>
-		
-						<a class="w3-button w3-black" onclick="replyPagination(${boardDto.writenumber},${1},'${root}')">««</a>
-						<c:if test="${startPage>pageBlock }">
-							<a class="w3-button w3-black" onclick="replyPagination(${boardDto.writenumber},${startPage-pageBlock},'${root}')">«</a>
-						</c:if>
-		
-						<c:forEach var="i" begin="${startPage}" end="${endPage}">
-							<c:choose>
-								<c:when test="${pageNumber==i}">
-									<a class="w3-button w3-black" style="background-color: gray; color: white;" onclick="replyPagination(${boardDto.writenumber},${i},'${root}')">${i}</a>
-								</c:when>
-								<c:otherwise>
-									<a class="w3-button w3-black" onclick="replyPagination(${boardDto.writenumber},${i},'${root}')">${i}</a>
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
-		
-						<c:if test="${endPage<pageCount}">
-							<a class="w3-button w3-black" onclick="replyPagination(${boardDto.writenumber},${startPage+pageBlock},'${root}')">»</a>
-						</c:if>
-		
-						<a class="w3-button w3-black" onclick="replyPagination(${boardDto.writenumber},${pageCount},'${root}')">»»</a>
-					</div>
-				</div>
-				
-				
+				<div class="w3-center w3-padding-32" style="display:block;" id="pagination"></div>
+
 			</c:otherwise>
 		</c:choose>
 		
+	</div>
+	
+	<!-- 글 수정용 폼 display:none 상태였다가 버튼누를시 화면 체인지 -->
+	<div class="w3-main" style="margin-left: 250px; display: none;" id="updateDetailForm">
+		<div class="w3-row w3-padding-64">
+			<div class="w3-twothird w3-container" style="width: 88%;">
+				<h2 class="text-center">글수정</h2>
+				<form class="form-horizontal" action="${root}/boardWriteOk.com" method="post" style="font-size: 20px !important;" enctype="multipart/form-data">
+					<input type="hidden" value="${boardDto.writenumber}" id="writenumber"/>
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="categoryname">카테고리선택:</label>
+						<div class="col-sm-3">
+							<select class="form-control" name="categoryname" id="categoryname" style="font-size: 20px;" >
+								<option value="select">카테고리선택</option>
+								<option value="java">자바</option>
+								<option value="languageC">C언어</option>
+								<option value="javascript">자바스크립트</option>
+								<option value="html">HTML/CSS</option>
+								<option value="python">파이썬</option>
+								<option value="qna">질문게시판</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="title">제목:</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="title" name="title" value="${boardDto.title }" style="font-size: 20px;">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="content">내용:</label>
+						<textarea class="form-control col-sm-10" rows="7" id="content" name="content" style="width: 81%; margin-left: 15px; font-size: 20px;">${boardDto.content}</textarea>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="file">파일변경:</label>
+						<c:if test="${!empty boardDto.filename}">
+							<label class="control-label col-sm-3" for="file" style="text-align: left;">${boardDto.filename}</label>
+						</c:if>
+						<input type="file" name="file" style="padding-left: 15px;"/>
+					</div>
+					<div class="form-group" style="text-align: end;">
+						<div class="col-sm-offset-2 col-sm-10">
+							<input id="writeUpdateButton" type="submit" value="수정" class="btn btn-primary" style="font-size: 20px; color: black; background-color: #f0f0f0 !important; border-color: lightgrey;"/>
+						</div>
+					</div>
+				</form>
+
+
+			</div>
+		</div>
 	</div>
 </body>
 </html>
