@@ -7,15 +7,14 @@
 <meta charset="UTF-8">
 <title>프로그래밍</title>
 <c:set var="root" value="${pageContext.request.contextPath}" />
-<script type="text/javascript" src="${root}/js/detail.js"></script>
+<script type="text/javascript" src="${root}/js/boardDetail.js"></script>
 </head>
 <body>
-	<input type="hidden" value="${root}" id="root" />
-	<c:if test="${membernumber!=null}">
-		<input type="hidden" value="${membernumber}" id="membernumber"/>	
-	</c:if>
-	
 	<c:set var="boardDto" value="${boardDto}"/>
+	<input type="hidden" value="${root}" id="root" />
+	<input type="hidden" value="${membernumber}" id="membernumber"/>
+	<input type="hidden" value="${boardDto.writenumber}" id="writenumber"/>
+	
 	<div class="w3-main" style="margin-left: 250px; display: block;" id="detailForm">
 		<div class="w3-row" style="margin-top: 100px;">
 			<div class="w3-twothird w3-container col-3">
@@ -95,7 +94,6 @@
 			<div class="w3-twothird w3-container" style="width: 88%;">
 				<h2 class="text-center">글수정</h2>
 				<form class="form-horizontal" action="${root}/boardWriteOk.com" method="post" style="font-size: 20px !important;" enctype="multipart/form-data">
-					<input type="hidden" value="${boardDto.writenumber}" id="writenumber"/>
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="categoryname">카테고리선택:</label>
 						<div class="col-sm-3">

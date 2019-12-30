@@ -36,5 +36,9 @@ public interface BodyService {
 	void passwordUpdate(ModelAndView mav);
 
 	void deleteMember(HttpSession session);
+
+	void replyUpdate(ModelAndView mav);
+
+	void replyDelete(ModelAndView mav);
 	
 }

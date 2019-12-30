@@ -28,6 +28,7 @@ import com.board.body.dao.BodyDao;
 import com.board.body.dto.BoardWriteDto;
 import com.board.body.dto.MemberDto;
 import com.board.body.dto.ReplyDto;
+import com.board.header.service.MainServiceImp;
 
 /**
  * @author choi jung eun
@@ -144,9 +145,9 @@ public class BodyServiceImp implements BodyService {
 		// TODO Auto-generated method stub
 		HttpServletRequest request=(HttpServletRequest)mav.getModel().get("request");
 		String writenumber=request.getParameter("writenumber");
-		String cate=request.getParameter("categoryname");
+		//String cate=request.getParameter("categoryname");
 		
-		LogAspect.info(LogAspect.logMsg+"글번호: "+writenumber+"카테-"+cate);
+		//LogAspect.info(LogAspect.logMsg+"글번호: "+writenumber+"카테-"+cate);
 		
 		Date date=new Date();
 		
@@ -244,6 +245,7 @@ public class BodyServiceImp implements BodyService {
 	public void deleteWrite(ModelAndView mav) {
 		// TODO Auto-generated method stub
 		HttpServletRequest request=(HttpServletRequest)mav.getModel().get("request");
+		HttpServletResponse response=(HttpServletResponse)mav.getModel().get("response");
 		String writenumber=request.getParameter("writenumber");
 		
 		String deletePath=bodyDao.getFilePath(writenumber);
@@ -254,7 +256,7 @@ public class BodyServiceImp implements BodyService {
 		
 		bodyDao.deleteWrite(writenumber);
 		
-		mav.setViewName("body/body.main");
+		mav.setViewName("redirect:main.com");
 	}
 	
 	//파일 다운로드
@@ -292,7 +294,7 @@ public class BodyServiceImp implements BodyService {
 		
 		if(pn==null || pn=="")	pn="1";
 		int pageNumber=Integer.parseInt(pn);
-		int boardSize=3;
+		int boardSize=10;
 		int startRow=(pageNumber-1)*boardSize+1;
 		int endRow=pageNumber*boardSize;
 		int count=0;
@@ -351,7 +353,6 @@ public class BodyServiceImp implements BodyService {
 		
 	}
 
-	
 	//댓글 등록
 	@Override
 	public void replyWrite(ModelAndView mav) {
@@ -371,6 +372,37 @@ public class BodyServiceImp implements BodyService {
 		
 		//데이터베이스에 저장
 		bodyDao.insertReplyWrite(rDto);
+	}
+	
+	//댓글 수정
+	@Override
+	public void replyUpdate(ModelAndView mav) {
+		// TODO Auto-generated method stub
+		HttpServletRequest request=(HttpServletRequest) mav.getModel().get("request");
+		String replynumber=request.getParameter("replynumber");
+		String reply=request.getParameter("reply");
+		//LogAspect.info(LogAspect.logMsg+replynumber+"   "+reply);
+		
+		ReplyDto dto=new ReplyDto();
+		Date date=new Date();
+		
+		dto.setReplycontent(reply);
+		dto.setReplynumber(Integer.parseInt(replynumber));
+		dto.setReplydate(date);
+		
+		bodyDao.updateReply(dto);
+		
+	}
+	
+	//댓글 삭제
+	@Override
+	public void replyDelete(ModelAndView mav) {
+		// TODO Auto-generated method stub
+		HttpServletRequest request=(HttpServletRequest) mav.getModel().get("request");
+		String replynumber=request.getParameter("replynumber");
+		
+		bodyDao.deleteReply(replynumber);
+		
 	}
 	
 	//마이페이지-패스워드 수정
@@ -400,5 +432,6 @@ public class BodyServiceImp implements BodyService {
 		
 		bodyDao.deleteMember(membernumber);
 	}
+
 
 }

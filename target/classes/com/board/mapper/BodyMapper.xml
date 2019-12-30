@@ -95,5 +95,15 @@
 		select writenumber from boardwrite where writedate=(select max(writedate) from boardwrite)
 	</select>
 	
+	<update id="updateReply" parameterType="com.board.body.dto.ReplyDto">
+		update reply
+		set replycontent=#{replycontent}, replydate=#{replydate}
+		where replynumber=#{replynumber}
+	</update>
+	
+	<delete id="deleteReply" parameterType="String">
+		delete from reply where replynumber=#{replynumber}
+	</delete>
+	
 </mapper>
 

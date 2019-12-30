@@ -45,6 +45,10 @@ public interface BodyDao {
 
 	int getWriteNumber();
 
+	void updateReply(ReplyDto dto);
+
+	void deleteReply(String replynumber);
+
 
 
 

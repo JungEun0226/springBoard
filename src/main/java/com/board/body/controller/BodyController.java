@@ -100,7 +100,7 @@ public class BodyController {
 		//세션 초기화
 		session.invalidate();
 		
-		return "body/body.main";
+		return "redirect:main.com";
 	}
 	
 	//글쓰기 페이지
@@ -142,6 +142,7 @@ public class BodyController {
 	public ModelAndView deleteWrite(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mav=new ModelAndView();
 		mav.addObject("request", request);
+		mav.addObject("response", response);
 		
 		bodyService.deleteWrite(mav);
 		
@@ -173,7 +174,6 @@ public class BodyController {
 	}
 	
 	//댓글 등록 /replyWrite.com
-	@ResponseBody
 	@RequestMapping(value = "/replyWrite.com", method = RequestMethod.POST)
 	public ModelAndView replyWrite(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		ModelAndView mav=new ModelAndView();
@@ -181,6 +181,28 @@ public class BodyController {
 		mav.addObject("response",response);
 		
 		bodyService.replyWrite(mav);
+		
+		return null;
+	}
+	
+	//댓글 수정 /replyUpdate.com
+	@RequestMapping(value = "/replyUpdate.com", method = RequestMethod.POST)
+	public ModelAndView replyUpdate(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ModelAndView mav=new ModelAndView();
+		mav.addObject("request", request);
+		
+		bodyService.replyUpdate(mav);
+		
+		return null;
+	}
+	
+	//댓글 삭제 /replyDelete.com
+	@RequestMapping(value = "/replyDelete.com", method = RequestMethod.POST)
+	public ModelAndView replyDelete(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ModelAndView mav=new ModelAndView();
+		mav.addObject("request", request);
+		
+		bodyService.replyDelete(mav);
 		
 		return null;
 	}

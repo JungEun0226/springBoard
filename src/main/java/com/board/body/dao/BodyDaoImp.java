@@ -131,6 +131,18 @@ public class BodyDaoImp implements BodyDao {
 		return sqlSession.selectOne(namespace+"getWriteNumber");
 	}
 
+	@Override
+	public void updateReply(ReplyDto dto) {
+		// TODO Auto-generated method stub
+		sqlSession.update(namespace+"updateReply", dto);
+	}
+
+	@Override
+	public void deleteReply(String replynumber) {
+		// TODO Auto-generated method stub
+		sqlSession.delete(namespace+"deleteReply", replynumber);
+	}
+
 
 
 }

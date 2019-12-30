@@ -89,6 +89,8 @@ function writeReply(writenumber){
 function makeList(json){
 	//alert(json.count);  newReply
 	var htmlText="";
+	var memNum=$("#loginMemberNumber").val();
+	alert(memNum);
 	
 	//댓글리스트 보여주기
 	$(json.list).each(function(i,e){
@@ -96,10 +98,10 @@ function makeList(json){
 		htmlText+='<span style="font-size: 20px; margin-right: 30px;">'+ json.list[i].memberid+'</span>';
 		htmlText+='<span style="font-size: 20px; margin-right: 15px;">작성일 : </span>';
 		htmlText+='<span style="font-size: 20px; margin-right: 15px;">'+json.list[i].replydate+'</span>';
-		htmlText+='<c:if test="${membernumber=='+ json.list[i].membernumber+'}">';
-		htmlText+='<span style="font-size: 20px; margin-right: 15px;">|| 수정</span>';
-		htmlText+='<span style="font-size: 20px;">|| 삭제</span>';
-		htmlText+='</c:if>';
+		if(memNum==json.list[i].membernumber){
+			htmlText+='<span style="font-size: 20px; margin-right: 15px;"> 수정</span>';
+			htmlText+='<span style="font-size: 20px;"> 삭제</span>';
+		}
 		htmlText+='</div>';
 		htmlText+='<div class="w3-twothird w3-container col-9" style="margin-bottom: 10px;">';
 		htmlText+='<p style="font-size: 20px; margin-right: 30px;">'+ json.list[i].replycontent+'</p>';

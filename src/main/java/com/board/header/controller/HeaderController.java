@@ -26,7 +26,7 @@ public class HeaderController {
 	private MainService mainService;
 	
 	/**
-	 * 메인화면과 전체글보기화면(나중에 게시글목록가져가야함)
+	 * 메인화면과 전체글보기화면
 	 */
 	@RequestMapping(value = {"/","/main.com"}, method = RequestMethod.GET)
 	public ModelAndView home(HttpServletRequest request, HttpServletResponse response) {
@@ -34,7 +34,6 @@ public class HeaderController {
 		mav.addObject("request",request);
 		
 		mainService.main(mav);
-		//LogAspect.info(LogAspect.logMsg);
 		
 		return mav;
 	}

@@ -24,6 +24,7 @@ $(document).ready(function(){
 	}
 	
 	$("#mainTitle").text(title);
+	
 });
 
 function pagination(root, categorynumber, pageNumber){

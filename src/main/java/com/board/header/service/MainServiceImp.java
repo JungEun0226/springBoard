@@ -1,10 +1,10 @@
 package com.board.header.service;
 
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,9 +29,8 @@ public class MainServiceImp implements MainService {
 	public void main(ModelAndView mav) {
 		// TODO Auto-generated method stub
 		//글목록과 페이징 처리
-		//LogAspect.info(LogAspect.logMsg+ "asdasdsad");
-		
 		HttpServletRequest request=(HttpServletRequest)mav.getModel().get("request");
+		
 		String pn=request.getParameter("pageNumber");	//페이지기능
 		if(pn==null)	pn="1";
 		int pageNumber=Integer.parseInt(pn);
