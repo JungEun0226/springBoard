@@ -73,7 +73,7 @@
 				<div class="w3-row" style="margin: 20px 0px;">
 					<div class="w3-twothird w3-container col-9" style="display: inline-flex;">
 						<input type="text" class="form-control" id="reply" style="font-size: 20px; margin-right: 30px;">
-						<input id="replyButton" type="button" value="댓글등록" class="btn btn-primary" style="position:relative; top:-3px; font-size: 20px; color: black; background-color: #f0f0f0 !important; border-color: lightgrey;"/>
+						<button id="replyButton" type="button" class="btn btn-primary" style="position:relative; top:-3px; font-size: 20px; color: black; background-color: #f0f0f0 !important; border-color: lightgrey;">댓글등록</button>
 					</div>
 				</div>
 				

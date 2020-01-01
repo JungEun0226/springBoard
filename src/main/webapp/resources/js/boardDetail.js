@@ -32,7 +32,7 @@ $(function(){
 		var reply=$("#reply").val();
 		var membernumber=$("#membernumber").val();
 		
-		if(reply=="" || reply==null){
+		if(reply==""){
 			alert("댓글을 입력해주세요");
 			return false;
 		}
@@ -43,7 +43,7 @@ $(function(){
 			url: root+"/replyWrite.com",
 			type: 'post',
 			data: sendData,
-			success:replyList(writenumber, 1)
+			success:replyList(writenumber,1)
 		});
 	});
 	

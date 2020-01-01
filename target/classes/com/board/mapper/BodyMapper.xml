@@ -105,5 +105,16 @@
 		delete from reply where replynumber=#{replynumber}
 	</delete>
 	
+	<select id="getFindId" parameterType="String" resultType="String">
+		<![CDATA[
+			select memberid from member where memberemail=#{memberemail}
+		]]>
+	</select>
+	
+	<select id="getFindPass" parameterType="String" resultType="String">
+		<![CDATA[
+			select membernumber from member where memberemail=#{memberemail}
+		]]>
+	</select>
 </mapper>
 

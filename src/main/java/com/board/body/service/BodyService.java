@@ -40,5 +40,9 @@ public interface BodyService {
 	void replyUpdate(ModelAndView mav);
 
 	void replyDelete(ModelAndView mav);
+
+	void findId(ModelAndView mav);
+
+	void findPass(ModelAndView mav);
 	
 }

@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>프로그래밍</title>
 <c:set var="root" value="${pageContext.request.contextPath}" />
-<script type="text/javascript" src="${root}/js/login.js"></script>
+<script type="text/javascript" src="${root}/js/loginJS.js"></script>
 <style type="text/css">
 button{
 	height: 35px !important;
@@ -34,7 +34,7 @@ button{
 		<div class="w3-row w3-padding-64">
 			<div class="w3-twothird w3-container" style="width: 88%;">
 				<h2 class="text-center" style="padding-bottom: 25px;">로그인</h2>
-				<form class="form-horizontal" action="/signUpOk.com" method="post" style="font-size: 20px; width: 75%; float: right;">
+				<form class="form-horizontal" style="font-size: 20px; width: 75%; float: right;">
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="memberID">아이디:</label>
 						<div class="col-sm-4">
@@ -55,16 +55,56 @@ button{
 						</div>
 					</div>
 					
+					<!-- 이메일로 아이디 찾기 -->
 					<div class="form-group" style="width: 70%; text-align: center;">
-						<!-- 이메일로 아이디 비밀번호 찾기 -->
 						<a class="w3-bar-item" href="${root}/signup.com" style="color:black; margin-right: 15px;">회원가입</a>
-						<a class="w3-bar-item" href="#" style="color:black; margin-right: 15px;">아이디찾기</a>
-						<a class="w3-bar-item" href="#" style="color:black;">비밀번호찾기</a>
-						
+						<span class="w3-bar-item" style="color:black; margin-right: 15px;" onclick="findIdJS()">아이디찾기</span>
+						<span class="w3-bar-item" style="color:black;" onclick="findPasswordJS()">비밀번호찾기</span>
 					</div>
 					
-				</form>
+					<div class="form-group" style="width: 70%; text-align: center; display: none;" id="findIdStyleForm">
+						<hr>
+						<h2 class="text-center" style="padding-bottom: 25px;">아이디 찾기</h2>
+						<label class="control-label col-sm-3" for="findId">이메일:</label>
+						<div class="col-sm-8" style="display: flex;">
+							<input type="text" class="form-control" id="findId">
+							<button id="findIdButton" type="button" class="btn btn-primary" style="margin-left: 20px">찾기</button>
+						</div>
+					</div>
+					<!-- 아이디찾기 결과값 -->
+					<div id="findIdResult"></div>
 					
+					
+					<!-- 이메일로 비밀번호찾기 -->
+					<div class="form-group" style="width: 70%; text-align: center; display: none;" id="findPassStyleForm">
+						<hr>
+						<h2 class="text-center" style="padding-bottom: 15px;">비밀번호 찾기</h2>
+						<label class="control-label col-sm-3">이메일:</label>
+						<div class="col-sm-8" style="display: flex;">
+							<input type="text" class="form-control" id="findPass">
+							<button id="findPassButton" type="button" class="btn btn-primary" style="margin-left: 20px">찾기</button>
+						</div>
+					</div>
+					
+					<!-- 비밀번호찾기 결과값 -->
+					<div id="findPassResult"></div>
+					<div class="form-group" style="width: 70%; text-align: center; display: none;" id="findPassUpdateStyleForm">
+						<hr>
+						<h2 class="text-center" style="padding-bottom: 15px;">비밀번호 수정</h2>
+						<label class="control-label col-sm-3">비밀번호:</label>
+						<div class="col-sm-6">
+							<input type="password" class="form-control" id="password" placeholder="4~20글자로 써주세요">
+						</div>
+						
+						<div class="form-group" style="margin-top: 60px;">
+							<label class="control-label col-sm-4" style="margin-left: -48px;">비밀번호 확인:</label>
+							<div class="col-sm-8" style="display: flex; width: 62%;">
+								<input type="password" class="form-control" id="passwordCheck" placeholder="4~20글자로 써주세요">
+								<button id="passwordUpdate" type="button" class="btn btn-primary" style="margin-left: 20px">수정</button>
+							</div>
+						</div>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>

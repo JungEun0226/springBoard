@@ -104,6 +104,50 @@ public class BodyServiceImp implements BodyService {
 		
 	}
 	
+	//로그인 - 아이디찾기
+	@Override
+	public void findId(ModelAndView mav) {
+		// TODO Auto-generated method stub
+		HttpServletRequest request=(HttpServletRequest) mav.getModel().get("request");
+		HttpServletResponse response=(HttpServletResponse) mav.getModel().get("response");
+		String memberemail=request.getParameter("memberemail");
+		
+		String memberid=bodyDao.getFindId(memberemail);
+		
+		response.setContentType("application/text;charset=utf-8");
+		PrintWriter out;
+		try {
+			out = response.getWriter();
+			out.print(memberid);
+			out.flush();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//로그인 - 비밀번호 찾기
+	@Override
+	public void findPass(ModelAndView mav) {
+		// TODO Auto-generated method stub
+		HttpServletRequest request=(HttpServletRequest) mav.getModel().get("request");
+		HttpServletResponse response=(HttpServletResponse) mav.getModel().get("response");
+		String memberemail=request.getParameter("memberemail");
+		
+		String membernumber=bodyDao.getFindPass(memberemail);
+		
+		response.setContentType("application/text;charset=utf-8");
+		PrintWriter out;
+		try {
+			out = response.getWriter();
+			out.print(membernumber);
+			out.flush();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	//로그인 시도
 	@Override
 	public void loginOk(ModelAndView mav) {
@@ -405,7 +449,7 @@ public class BodyServiceImp implements BodyService {
 		
 	}
 	
-	//마이페이지-패스워드 수정
+	//마이페이지-비밀번호 수정
 	@Override
 	public void passwordUpdate(ModelAndView mav) {
 		// TODO Auto-generated method stub
@@ -432,6 +476,5 @@ public class BodyServiceImp implements BodyService {
 		
 		bodyDao.deleteMember(membernumber);
 	}
-
 
 }

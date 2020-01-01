@@ -81,6 +81,30 @@ public class BodyController {
 		return "body/login.main";
 	}
 	
+	//로그인 - 아이디찾기
+	@RequestMapping(value = "/findId.com", method = RequestMethod.POST)
+	public ModelAndView findId(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		ModelAndView mav=new ModelAndView();
+		mav.addObject("request", request);
+		mav.addObject("response",response);
+		
+		bodyService.findId(mav);
+		
+		return null;
+	}
+	
+	//로그인 - 비밀번호 찾기
+		@RequestMapping(value = "/findPass.com", method = RequestMethod.POST)
+		public ModelAndView findPass(HttpServletRequest request, HttpServletResponse response) throws Exception {
+			ModelAndView mav=new ModelAndView();
+			mav.addObject("request", request);
+			mav.addObject("response",response);
+			
+			bodyService.findPass(mav);
+			
+			return null;
+		}
+	
 	//로그인 처리
 	@RequestMapping(value = "/loginOk.com", method = RequestMethod.POST)
 	public ModelAndView loginOk(HttpServletRequest request, HttpServletResponse response) {

@@ -49,6 +49,10 @@ public interface BodyDao {
 
 	void deleteReply(String replynumber);
 
+	String getFindId(String memberemail);
+
+	String getFindPass(String memberemail);
+
 
 
 

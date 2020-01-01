@@ -143,6 +143,18 @@ public class BodyDaoImp implements BodyDao {
 		sqlSession.delete(namespace+"deleteReply", replynumber);
 	}
 
+	@Override
+	public String getFindId(String memberemail) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+"getFindId", memberemail);
+	}
+
+	@Override
+	public String getFindPass(String memberemail) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+"getFindPass", memberemail);
+	}
+
 
 
 }
