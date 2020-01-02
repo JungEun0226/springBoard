@@ -44,5 +44,7 @@ public interface BodyService {
 	void findId(ModelAndView mav);
 
 	void findPass(ModelAndView mav);
+
+	void myPostsManage(ModelAndView mav);
 	
 }

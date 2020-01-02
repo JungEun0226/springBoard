@@ -257,4 +257,15 @@ public class BodyController {
 		
 		return "body/login.main";
 	}
+	
+	//마이페이지 - 내 글 관리 /myPostsManage.com
+	@RequestMapping(value = "/myPostsManage.com", method = RequestMethod.GET)
+	public ModelAndView myPostsManage(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mav=new ModelAndView();
+		mav.addObject("request", request);
+		
+		bodyService.myPostsManage(mav);
+		
+		return mav;
+	}
 }

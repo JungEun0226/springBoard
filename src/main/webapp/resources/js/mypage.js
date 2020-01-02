@@ -52,4 +52,14 @@ $(function(){
 			location.href=root+"/deleteMember.com";			
 		}
 	});
+	
+	//내 글 관리
+	$("#myPostsManage").click(function(){
+		location.href=root+"/myPostsManage.com?membernumber="+membernumber;
+	});
+	
+	//내 댓글 관리
+	$("#myReplyManage").click(function(){
+		location.href=root+"/myReplyManage.com?membernumber="+membernumber;
+	});
 });

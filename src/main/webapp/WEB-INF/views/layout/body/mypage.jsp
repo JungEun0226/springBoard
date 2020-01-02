@@ -8,6 +8,15 @@
 <title>프로그래밍</title>
 <c:set var="root" value="${pageContext.request.contextPath}" />
 <script type="text/javascript" src="${root}/js/mypage.js"></script>
+<style type="text/css">
+input[type=button]{
+font-size: 20px; 
+color: black; 
+background-color: #f0f0f0 !important; 
+border-color: lightgrey;
+margin-right: 20px;
+}
+</style>
 </head>
 <body>
 	<input type="hidden" value="${membernumber}" id="membernumber"/>
@@ -28,7 +37,7 @@
 					<div class="col-sm-7">
 						<input type="password" class="form-control" id="passwordCheck" placeholder="4~20글자로 써주세요">
 					</div>
-					<input id="passwordUpdate" type="button" value="수정" class="btn btn-primary" style="position:relative; top:-5px; left:20px; font-size: 20px; color: black; background-color: #f0f0f0 !important; border-color: lightgrey;"/>
+					<input id="passwordUpdate" type="button" value="수정" class="btn btn-primary" style="position:relative; top:-5px; left:20px;"/>
 				</div>
 				
 			</div>
@@ -36,7 +45,9 @@
 		<hr><hr><hr>
 		<div class="w3-row">
 			<div class="w3-twothird w3-container col-9">
-				<input id="memberDelete" type="button" value="회원탈퇴" class="btn btn-primary" style="font-size: 20px; color: black; background-color: #f0f0f0 !important; border-color: lightgrey;"/>
+				<input id="memberDelete" type="button" value="회원탈퇴" class="btn btn-primary"/>
+				<input id="myPostsManage" type="button" value="내 글 관리" class="btn btn-primary"/>
+				<input id="myReplyManage" type="button" value="내 댓글 관리" class="btn btn-primary"/>
 			</div>
 		</div>
 	</div>

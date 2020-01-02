@@ -476,5 +476,15 @@ public class BodyServiceImp implements BodyService {
 		
 		bodyDao.deleteMember(membernumber);
 	}
+	
+	//마이페이지 - 내 글 관리
+	@Override
+	public void myPostsManage(ModelAndView mav) {
+		// TODO Auto-generated method stub
+		HttpServletRequest request=(HttpServletRequest) mav.getModel().get("request");
+		String membernumber=request.getParameter("membernumber");
+		
+		mav.setViewName("body/myPosts.main");
+	}
 
 }
