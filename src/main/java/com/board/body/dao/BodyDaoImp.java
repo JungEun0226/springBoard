@@ -155,6 +155,30 @@ public class BodyDaoImp implements BodyDao {
 		return sqlSession.selectOne(namespace+"getFindPass", memberemail);
 	}
 
+	@Override
+	public int getBoardWriteCount(String membernumber) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+"getBoardWriteCount", membernumber);
+	}
+
+	@Override
+	public int getReplyCountMemberNum(String membernumber) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+"getReplyCountMemberNum", membernumber);
+	}
+
+	@Override
+	public List<Object> getBoardWriteList(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(namespace+"getBoardWriteList", map);
+	}
+
+	@Override
+	public List<Object> getReplyListMemberNum(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(namespace+"getReplyListMemberNum", map);
+	}
+
 
 
 }

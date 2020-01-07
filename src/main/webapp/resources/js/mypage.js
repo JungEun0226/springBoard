@@ -55,11 +55,11 @@ $(function(){
 	
 	//내 글 관리
 	$("#myPostsManage").click(function(){
-		location.href=root+"/myPostsManage.com?membernumber="+membernumber;
+		location.href=root+"/myPostsManage.com?membernumber="+membernumber+"&key=posts&pageNumber=1";
 	});
 	
 	//내 댓글 관리
 	$("#myReplyManage").click(function(){
-		location.href=root+"/myReplyManage.com?membernumber="+membernumber;
+		location.href=root+"/myReplyManage.com?membernumber="+membernumber+"&key=reply&pageNumber=1";
 	});
 });

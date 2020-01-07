@@ -9,15 +9,6 @@
 <c:set var="root" value="${pageContext.request.contextPath}" />
 <script type="text/javascript" src="${root}/js/loginJS.js"></script>
 <style type="text/css">
-button{
-	height: 35px !important;
-    padding-top: 4px !important;
-    font-size: 20px !important;
-    color: black !important;
-    background-color: #f0f0f0 !important;
-    border-color: lightgrey !important;
-}
-
 .col-sm-4 {
 	margin-top: 3px; 
 }

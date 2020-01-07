@@ -8,15 +8,6 @@
 <title>프로그래밍</title>
 <c:set var="root" value="${pageContext.request.contextPath}" />
 <script type="text/javascript" src="${root}/js/mypage.js"></script>
-<style type="text/css">
-input[type=button]{
-font-size: 20px; 
-color: black; 
-background-color: #f0f0f0 !important; 
-border-color: lightgrey;
-margin-right: 20px;
-}
-</style>
 </head>
 <body>
 	<input type="hidden" value="${membernumber}" id="membernumber"/>

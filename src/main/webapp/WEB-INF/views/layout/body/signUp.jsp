@@ -10,14 +10,6 @@
 <style type="text/css">
 .form-control{font-size: 18px;}
 .control-label{padding-top: 2px !important;}
-button{
-	height: 35px !important;
-    padding-top: 4px !important;
-    font-size: 20px !important;
-    color: black !important;
-    background-color: #f0f0f0 !important;
-    border-color: lightgrey !important;
-}
 .col-sm-2{width: 20%;}
 </style>
 </head>

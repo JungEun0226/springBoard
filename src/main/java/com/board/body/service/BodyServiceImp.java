@@ -407,14 +407,12 @@ public class BodyServiceImp implements BodyService {
 		ReplyDto rDto=new ReplyDto();
 		Date date=new Date();
 				
-		rDto.setReplycontent(request.getParameter("reply"));
+		rDto.setReplycontent(request.getParameter("reply").replaceAll("<br>", "\r\n"));
 		rDto.setMembernumber(Integer.parseInt(request.getParameter("membernumber")));
 		rDto.setWritenumber(Integer.parseInt(writenumber));
 		rDto.setMemberid(bodyDao.getMemberId(rDto.getMembernumber()));
 		rDto.setReplydate(date);
 		
-		
-		//데이터베이스에 저장
 		bodyDao.insertReplyWrite(rDto);
 	}
 	
@@ -477,14 +475,63 @@ public class BodyServiceImp implements BodyService {
 		bodyDao.deleteMember(membernumber);
 	}
 	
-	//마이페이지 - 내 글 관리
+	//마이페이지 - 내 글 관리, 내 댓글 관리
 	@Override
 	public void myPostsManage(ModelAndView mav) {
 		// TODO Auto-generated method stub
 		HttpServletRequest request=(HttpServletRequest) mav.getModel().get("request");
 		String membernumber=request.getParameter("membernumber");
+		String key=request.getParameter("key");
+		String pn=request.getParameter("pageNumber");
 		
-		mav.setViewName("body/myPosts.main");
+		int pageNumber=Integer.parseInt(pn);
+		int boardSize=10;
+		int startRow=(pageNumber-1)*boardSize+1;
+		int endRow=pageNumber*boardSize;
+		int count=0;
+		
+		HashMap<String, Object> map=new HashMap<String, Object>();
+		map.put("startRow", startRow);
+		map.put("endRow", endRow);
+		map.put("membernumber", membernumber);
+		
+		if(key.equals("posts")) {
+			count=bodyDao.getBoardWriteCount(membernumber);
+		}else {
+			count=bodyDao.getReplyCountMemberNum(membernumber);
+		}
+		
+		List<Object> list=null;
+		
+		if(count>0) {
+			if(key.equals("posts")) {	//글 관리
+				list=bodyDao.getBoardWriteList(map);
+				key="내 글 관리";
+				
+				for(int i=0;i<list.size();i++) {
+					((BoardWriteDto) list.get(i)).setContent(((BoardWriteDto) list.get(i)).getContent().replaceAll("<br>", "\r\n"));
+				}
+				
+			}else {	//댓글 관리
+				list=bodyDao.getReplyListMemberNum(map);
+				key="내 댓글 관리";
+				
+				for(int i=0;i<list.size();i++) {
+					((ReplyDto) list.get(i)).setReplycontent(((ReplyDto) list.get(i)).getReplycontent().replaceAll("<br>", "\r\n"));
+				}
+			}
+
+		}
+		
+		mav.addObject("key", key);
+		mav.addObject("pageNumber", pageNumber);
+		mav.addObject("boardSize", boardSize);
+		mav.addObject("startRow", startRow);
+		mav.addObject("endRow", endRow);
+		mav.addObject("count", count);
+		mav.addObject("list", list);
+		
+		mav.setViewName("body/myPostsManage.main");
 	}
 
 }

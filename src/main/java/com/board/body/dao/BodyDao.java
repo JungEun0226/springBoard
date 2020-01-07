@@ -53,6 +53,14 @@ public interface BodyDao {
 
 	String getFindPass(String memberemail);
 
+	int getBoardWriteCount(String membernumber);
+
+	int getReplyCountMemberNum(String membernumber);
+
+	List<Object> getBoardWriteList(HashMap<String, Object> map);
+
+	List<Object> getReplyListMemberNum(HashMap<String, Object> map);
+
 
 
 
