@@ -14,11 +14,11 @@ body{
 }
  
 input[type=button]{
-font-size: 20px; 
-color: black; 
+font-size: 20px !important; 
+color: black !important; 
 background-color: #f0f0f0 !important; 
-border-color: lightgrey;
-margin-right: 20px;
+border-color: lightgrey !important;
+margin-right: 20px !important;
 }
 
 button{

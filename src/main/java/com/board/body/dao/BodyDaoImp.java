@@ -179,6 +179,18 @@ public class BodyDaoImp implements BodyDao {
 		return sqlSession.selectList(namespace+"getReplyListMemberNum", map);
 	}
 
+	@Override
+	public void myPageSelectDelete(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		sqlSession.delete(namespace+"myPageSelectDelete", map);
+	}
+
+	@Override
+	public void myPageAllDelete(HashMap<String, Object> map) {
+		// TODO Auto-generated method stub
+		sqlSession.delete(namespace+"myPageAllDelete", map);
+	}
+
 
 
 }

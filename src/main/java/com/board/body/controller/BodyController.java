@@ -268,4 +268,15 @@ public class BodyController {
 		
 		return mav;
 	}
+	
+	//마이페에지 - 내 글 관리, 내 댓글 관리 삭제 myPageDelete
+	@RequestMapping(value = "/myPageDelete.com", method = RequestMethod.POST)
+	public ModelAndView myPageDelete(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mav=new ModelAndView();
+		mav.addObject("request", request);
+		
+		bodyService.myPageDelete(mav);
+		
+		return null;
+	}
 }

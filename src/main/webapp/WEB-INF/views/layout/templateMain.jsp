@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>프로그래밍</title>
 <c:set var="root" value="${pageContext.request.contextPath}" />
-<link rel="stylesheet" type="text/css" href="/spring/css/header/header.css" />
+<link rel="stylesheet" type="text/css" href="${root }/css/common.css">
 <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">

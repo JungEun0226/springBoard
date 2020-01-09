@@ -60,6 +60,6 @@ $(function(){
 	
 	//내 댓글 관리
 	$("#myReplyManage").click(function(){
-		location.href=root+"/myReplyManage.com?membernumber="+membernumber+"&key=reply&pageNumber=1";
+		location.href=root+"/myPostsManage.com?membernumber="+membernumber+"&key=reply&pageNumber=1";
 	});
 });

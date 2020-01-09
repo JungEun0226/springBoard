@@ -8,27 +8,37 @@
 <meta charset="UTF-8">
 <title>프로그래밍</title>
 <c:set var="root" value="${pageContext.request.contextPath}" />
+<script type="text/javascript" src="${root}/js/postsManage.js"></script>
+<style type="text/css">
+td>div{
+	overflow: hidden;
+	height: 30px;
+}
+</style>
 </head>
 <body>
 	<div class="w3-main" style="margin-left: 250px">
 		<div class="w3-row" style="margin-top: 100px;">
 			<div class="w3-twothird w3-container col-3">
 				<h2>${key}</h2>
+				<input type="hidden" value="${key}" id="key"/>
+				<input type="hidden" value="${membernumber}" id="membernumber"/>
+				<input type="hidden" value="${root}" id="root"/>
 				
-				<table class="table" style="font-size: 20px;">
+				<table class="table table-hover" style="font-size: 20px;">
 					<thead>
 						<tr>
-							<th><input type="checkbox" name="selectAll" value="selectAll"></th>
-							<th>글번호</th>
+							<th><input type="checkbox" id="selectAll" name="selectAll" onclick="checkAll()"></th>
+							<th style="width: 10%;">글번호</th>
 							<c:if test="${key eq '내 글 관리'}">
-								<th>글제목</th>
-								<th>작성일</th>
+								<th style="width: 15%;">글제목</th>
+								<th style="width: 25%;">작성일</th>
 								<th>글내용</th>
 							</c:if>
 							
 							<c:if test="${key eq '내 댓글 관리'}">
-								<th>댓글번호</th>
-								<th>작성일</th>
+								<th style="width: 10%;">댓글번호</th>
+								<th style="width: 25%;">작성일</th>
 								<th>댓글내용</th>
 							</c:if>
 						</tr>
@@ -38,12 +48,12 @@
 						<c:if test="${key eq '내 글 관리'}">
 							<c:forEach var="listDto" items="${list}">
 								<tr>
-								<td><input type="checkbox"></td>	
-								<td>${listDto.writenumber }</td>
-								<td>${listDto.title }</td>
-								<fmt:formatDate value="${listDto.writedate }" var="writedate" pattern="yyyy-MM-dd HH:mm:ss"/>
-								<td>${writedate}</td>
-								<td>${listDto.content }</td>
+									<td><input type="checkbox" name="check" value="${listDto.writenumber }"></td>	
+									<td onclick="goDetail('${root}',${listDto.writenumber })">${listDto.writenumber }</td>
+									<td onclick="goDetail('${root}',${listDto.writenumber })"><div>${listDto.title }</div></td>
+									<fmt:formatDate value="${listDto.writedate }" var="writedate" pattern="yyyy-MM-dd HH:mm:ss"/>
+									<td onclick="goDetail('${root}',${listDto.writenumber })">${writedate}</td>
+									<td onclick="goDetail('${root}',${listDto.writenumber })"><div>${listDto.content }</div></td>
 								</tr>
 							</c:forEach>
 						</c:if>
@@ -51,21 +61,20 @@
 						<c:if test="${key eq '내 댓글 관리'}">
 							<c:forEach var="listDto" items="${list}">
 								<tr>
-								<td><input type="checkbox"></td>	
-								<td>${listDto.writenumber }</td>
-								<td>${listDto.replynumber }</td>
+								<td><input type="checkbox" name="check" value="${listDto.replynumber }"></td>	
+								<td onclick="goDetail('${root}',${listDto.writenumber })">${listDto.writenumber }</td>
+								<td onclick="goDetail('${root}',${listDto.writenumber })">${listDto.replynumber }</td>
 								<fmt:formatDate value="${listDto.replydate }" var="replyDate" pattern="yyyy-MM-dd HH:mm:ss"/>
-								<td>${replyDate}</td>
-								<td>${listDto.replycontent }</td>
+								<td onclick="goDetail('${root}',${listDto.writenumber })">${replyDate}</td>
+								<td onclick="goDetail('${root}',${listDto.writenumber })"><div>${listDto.replycontent }</div></td>
 								</tr>
 							</c:forEach>
 						</c:if>
 
 					</tbody>
 				</table>
-				
-				<p><button type="button" style="float: right; margin: 25px 0px;">전체 삭제</button></p>
-				<p><button type="button" style="float: right; margin: 25px 20px;">선택 삭제</button></p>
+				<p><button type="button" style="float: right; margin: 25px 0px;" id="allDelete">전체 삭제</button></p>
+				<p><button type="button" style="float: right; margin: 25px 20px;" id="selectDelete">선택 삭제</button></p>
 				
 				<!-- 페이지기능 -->
 				<div class="w3-center w3-padding-32">
@@ -83,28 +92,28 @@
 							</c:if>
 						</c:if>
 		
-						<a class="w3-button w3-black" onclick="pagination('${root}',${categorynumber},${1})">««</a>
+						<a class="w3-button w3-black" onclick="pagination('${root}',${membernumber},${key},${1})">««</a>
 						<c:if test="${startPage>pageBlock }">
-							<a class="w3-button w3-black" onclick="pagination('${root}',${categorynumber},${startPage-pageBlock})">«</a>
+							<a class="w3-button w3-black" onclick="pagination('${root}',${membernumber},${key},${startPage-pageBlock})">«</a>
 						</c:if>
 		
 						<c:forEach var="i" begin="${startPage}" end="${endPage}">
 							<c:choose>
 								<c:when test="${pageNumber==i}">
-									<a class="w3-button w3-black" style="background-color: gray; color: white;" onclick="pagination('${root}',${categorynumber},${i})">${i}</a>
+									<a class="w3-button w3-black" style="background-color: gray; color: white;" onclick="pagination('${root}',${membernumber},${key},${i})">${i}</a>
 								</c:when>
 								<c:otherwise>
-									<a class="w3-button w3-black" onclick="pagination('${root}',${categorynumber},${i})">${i}</a>
+									<a class="w3-button w3-black" onclick="pagination('${root}',${membernumber},${key},${i})">${i}</a>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 		
 						<c:if test="${endPage<pageCount }">
-							<a class="w3-button w3-black" onclick="pagination('${root}',${categorynumber},${startPage+pageBlock})">»</a>
+							<a class="w3-button w3-black" onclick="pagination('${root}',${membernumber},${key},'${startPage+pageBlock}')">»</a>
 						</c:if>
 		
-						<a class="w3-button w3-black" onclick="pagination('${root}',${categorynumber},${pageCount})">»»</a>
-		
+						<a class="w3-button w3-black" onclick="pagination('${root}','${membernumber}','${key}','${pageCount}')"> »» </a>
+
 					</div>
 				</div>
 				

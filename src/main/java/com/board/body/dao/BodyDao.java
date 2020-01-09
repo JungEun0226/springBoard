@@ -61,6 +61,10 @@ public interface BodyDao {
 
 	List<Object> getReplyListMemberNum(HashMap<String, Object> map);
 
+	void myPageSelectDelete(HashMap<String, Object> map);
+
+	void myPageAllDelete(HashMap<String, Object> map);
+
 
 
 

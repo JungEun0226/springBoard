@@ -151,6 +151,12 @@
 		]]>
 	</select>
 	
+	<delete id="myPageSelectDelete" parameterType="java.util.HashMap">
+		delete from ${key} <if test='key=="boardwrite"'>where writenumber=#{check}</if><if test='key=="reply"'>where replynumber=#{check}</if>
+	</delete>
 	
+	<delete id="myPageAllDelete" parameterType="java.util.HashMap">
+		delete from ${key} where membernumber=#{membernumber}
+	</delete>
 </mapper>
 

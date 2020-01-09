@@ -310,21 +310,29 @@ public class BodyServiceImp implements BodyService {
 		HttpServletRequest request=(HttpServletRequest)mav.getModel().get("request");
 		HttpServletResponse response=(HttpServletResponse)mav.getModel().get("response");
 		
+		String writenumber=request.getParameter("writenumber");
 		String downFilePath=request.getParameter("downFilePath");
 		int index=downFilePath.indexOf("_");
 		String path="C:\\Users\\choi\\Desktop\\";
 		//LogAspect.info(LogAspect.logMsg+downFilePath);
 		
-		byte fileByte[]=FileUtils.readFileToByteArray(new File(path+downFilePath));	//파일 저장경로에서 읽어와 바이트 배열 형태로 변환해주는 함수
-		
-		response.setContentType("application/octet-stream");
-		response.setContentLength(fileByte.length);
-		response.setHeader("Content-Disposition", "attachment; fileName=\""+URLEncoder.encode(downFilePath.substring(index+1), "UTF-8")+"\";"); //attachment는 첨부파일을 의미, URLEncoder는 첨부파일의 이름지정
-		response.setHeader("Content-Transfer-Encoding", "binary");
-		response.getOutputStream().write(fileByte);
-		
-		response.getOutputStream().flush();
-		response.getOutputStream().close();
+		try {
+			byte fileByte[]=FileUtils.readFileToByteArray(new File(path+downFilePath));	//파일 저장경로에서 읽어와 바이트 배열 형태로 변환해주는 함수		
+			
+			response.setContentType("application/octet-stream");
+			response.setContentLength(fileByte.length);
+			response.setHeader("Content-Disposition", "attachment; fileName=\""+URLEncoder.encode(downFilePath.substring(index+1), "UTF-8")+"\";"); //attachment는 첨부파일을 의미, URLEncoder는 첨부파일의 이름지정
+			response.setHeader("Content-Transfer-Encoding", "binary");
+			response.getOutputStream().write(fileByte);
+			response.getOutputStream().flush();
+			response.getOutputStream().close();
+		}catch (Exception e) {
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>alert('파일이 존재하지 않습니다'); location.href='/spring/boardDetail.com?writenumber="+writenumber+"';</script>");
+			out.close();
+		}
+
 	}
 	
 	//댓글 리스트
@@ -503,27 +511,31 @@ public class BodyServiceImp implements BodyService {
 		
 		List<Object> list=null;
 		
-		if(count>0) {
-			if(key.equals("posts")) {	//글 관리
+		if(key.equals("posts")) {	//글 관리
+			key="내 글 관리";
+			if(count>0) {
 				list=bodyDao.getBoardWriteList(map);
-				key="내 글 관리";
-				
+
 				for(int i=0;i<list.size();i++) {
 					((BoardWriteDto) list.get(i)).setContent(((BoardWriteDto) list.get(i)).getContent().replaceAll("<br>", "\r\n"));
 				}
-				
-			}else {	//댓글 관리
+			}
+			
+		}else {	//댓글 관리
+			key="내 댓글 관리";
+			if(count>0) {
 				list=bodyDao.getReplyListMemberNum(map);
-				key="내 댓글 관리";
 				
 				for(int i=0;i<list.size();i++) {
 					((ReplyDto) list.get(i)).setReplycontent(((ReplyDto) list.get(i)).getReplycontent().replaceAll("<br>", "\r\n"));
 				}
 			}
-
 		}
+
+		
 		
 		mav.addObject("key", key);
+		mav.addObject("membernumber", membernumber);
 		mav.addObject("pageNumber", pageNumber);
 		mav.addObject("boardSize", boardSize);
 		mav.addObject("startRow", startRow);
@@ -532,6 +544,34 @@ public class BodyServiceImp implements BodyService {
 		mav.addObject("list", list);
 		
 		mav.setViewName("body/myPostsManage.main");
+	}
+
+	@Override
+	public void myPageDelete(ModelAndView mav) {
+		// TODO Auto-generated method stub
+		HttpServletRequest request=(HttpServletRequest) mav.getModel().get("request");
+		
+		String checkValue=request.getParameter("check");
+		String key=request.getParameter("key");
+		String membernumber=request.getParameter("membernumber");
+		
+		//LogAspect.info(LogAspect.logMsg+"checkvalue="+checkValue+"     key="+key+"   membernumber="+membernumber);
+		
+		HashMap<String, Object> map=new HashMap<String,Object>();
+		map.put("key", key);
+		
+		if(membernumber!=null) {	//전체삭제
+			map.put("membernumber", membernumber);
+			bodyDao.myPageAllDelete(map);
+			
+		}else {							//선택삭제
+			String[] check=checkValue.split(",");
+			
+			for(int i=0;i<check.length;i++) {
+				map.put("check", check[i]);
+				bodyDao.myPageSelectDelete(map);
+			}
+		}
 	}
 
 }

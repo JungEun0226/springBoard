@@ -43,7 +43,7 @@
 			<div class="w3-row" style="margin-top: 30px;">
 				<div class="w3-twothird w3-container col-9">
 					<p style="font-size: 20px; display: inline; margin-right: 10px;">첨부파일:</p>
-					<a href="${root}/downloadFile.com?downFilePath=${downFilePath}" id="file" style="font-size: 20px; color: darkcyan;">
+					<a href="${root}/downloadFile.com?downFilePath=${downFilePath}&writenumber=${boardDto.writenumber}" id="file" style="font-size: 20px; color: darkcyan;">
 						<c:out value="${boardDto.filename}"></c:out>
 					</a>
 				</div>
