@@ -43,9 +43,16 @@
 	</update>
 	
 	<update id="updateWrite" parameterType="com.board.body.dto.BoardWriteDto">
-		update boardwrite
-		set categorynumber=#{categorynumber}, title=#{title}, content=#{content}, writedate=#{writedate}, filename=#{filename,jdbcType=VARCHAR}, filepath=#{filepath,jdbcType=VARCHAR}
-		where writenumber=#{writenumber}
+		<if test="filename!=null">
+			update boardwrite
+			set categorynumber=#{categorynumber}, title=#{title}, content=#{content}, writedate=#{writedate}, filename=#{filename,jdbcType=VARCHAR}, filepath=#{filepath,jdbcType=VARCHAR}
+			where writenumber=#{writenumber}
+		</if>
+		<if test="filename==null">
+			update boardwrite
+			set categorynumber=#{categorynumber}, title=#{title}, content=#{content}, writedate=#{writedate}
+			where writenumber=#{writenumber}
+		</if>
 	</update>
 	
 	<delete id="deleteWrite" parameterType="String">
@@ -158,5 +165,9 @@
 	<delete id="myPageAllDelete" parameterType="java.util.HashMap">
 		delete from ${key} where membernumber=#{membernumber}
 	</delete>
+	
+	<select id="getFileName" parameterType="String" resultType="String">
+		select filename from boardwrite where writenumber=#{writenumber}
+	</select>
 </mapper>
 

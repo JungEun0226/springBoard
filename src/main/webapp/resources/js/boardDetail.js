@@ -96,7 +96,7 @@ function deleteReply(replynumber){
 //댓글목록 받아오기
 function replyList(writenumber, pageNumber){
 	var sendData="writenumber="+writenumber+"&pageNumber="+pageNumber;
-	//alert(sendData);
+	alert(sendData);
 	
 	$.ajax({
 		url: root+"/replyList.com",
@@ -108,8 +108,10 @@ function replyList(writenumber, pageNumber){
 
 //댓글목록
 function makeList(json){
-	//alert(json.count);  newReply
+	alert(json.count); 
 	var htmlText="";
+	$("#reply").val("");
+	
 	var membernumber=$("#membernumber").val();
 	var newReply=document.getElementById("newReply");
 	

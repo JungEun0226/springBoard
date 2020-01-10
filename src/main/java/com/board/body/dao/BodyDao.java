@@ -65,6 +65,8 @@ public interface BodyDao {
 
 	void myPageAllDelete(HashMap<String, Object> map);
 
+	String getFileName(String writenumber);
+
 
 
 

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@	taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@	taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<% pageContext.setAttribute("enterReplace", "\n");%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +15,6 @@
 	<c:set var="boardDto" value="${boardDto}"/>
 	<input type="hidden" value="${root}" id="root" />
 	<input type="hidden" value="${membernumber}" id="membernumber"/>
-	<input type="hidden" value="${boardDto.writenumber}" id="writenumber"/>
 	
 	<div class="w3-main" style="margin-left: 250px; display: block;" id="detailForm">
 		<div class="w3-row" style="margin-top: 100px;">
@@ -43,7 +44,7 @@
 			<div class="w3-row" style="margin-top: 30px;">
 				<div class="w3-twothird w3-container col-9">
 					<p style="font-size: 20px; display: inline; margin-right: 10px;">첨부파일:</p>
-					<a href="${root}/downloadFile.com?downFilePath=${downFilePath}&writenumber=${boardDto.writenumber}" id="file" style="font-size: 20px; color: darkcyan;">
+					<a href="${root}/downloadFile.com?downFilePath=${boardDto.filepath}&writenumber=${boardDto.writenumber}" id="file" style="font-size: 20px; color: darkcyan;">
 						<c:out value="${boardDto.filename}"></c:out>
 					</a>
 				</div>
@@ -72,8 +73,8 @@
 			<c:otherwise>
 				<div class="w3-row" style="margin: 20px 0px;">
 					<div class="w3-twothird w3-container col-9" style="display: inline-flex;">
-						<input type="text" class="form-control" id="reply" style="font-size: 20px; margin-right: 30px;">
-						<button id="replyButton" type="button" class="btn btn-primary" style="position:relative; top:-3px; font-size: 20px; color: black; background-color: #f0f0f0 !important; border-color: lightgrey;">댓글등록</button>
+						<textarea class="form-control col-9" id="reply" style="font-size: 20px; margin-right: 30px;"></textarea>
+						<button id="replyButton" type="button" class="btn btn-primary" style="position:relative; top:-3px;">댓글등록</button>
 					</div>
 				</div>
 				
@@ -94,6 +95,7 @@
 			<div class="w3-twothird w3-container" style="width: 88%;">
 				<h2 class="text-center">글수정</h2>
 				<form class="form-horizontal" action="${root}/boardWriteOk.com" method="post" style="font-size: 20px !important;" enctype="multipart/form-data">
+					<input type="hidden" value="${boardDto.writenumber }" id="writenumber" name="writenumber">
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="categoryname">카테고리선택:</label>
 						<div class="col-sm-3">
@@ -116,7 +118,7 @@
 					</div>
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="content">내용:</label>
-						<textarea class="form-control col-sm-10" rows="7" id="content" name="content" style="width: 81%; margin-left: 15px; font-size: 20px;">${boardDto.content}</textarea>
+						<textarea class="form-control col-sm-10" rows="7" id="content" name="content" style="width: 81%; margin-left: 15px; font-size: 20px;">${fn:replace(boardDto.content, "<br>", enterReplace)}</textarea>
 					</div>
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="file">파일변경:</label>

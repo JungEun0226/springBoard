@@ -191,6 +191,12 @@ public class BodyDaoImp implements BodyDao {
 		sqlSession.delete(namespace+"myPageAllDelete", map);
 	}
 
+	@Override
+	public String getFileName(String writenumber) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+"getFileName", writenumber);
+	}
+
 
 
 }

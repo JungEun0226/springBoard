@@ -60,7 +60,7 @@ public class MainServiceImp implements MainService {
 		
 		
 		for(int i=0;i<list.size();i++) {	//줄바꿈 처리
-			String content=list.get(i).getContent().replaceAll("<br>", "\\r\\n");
+			String content=list.get(i).getContent().replaceAll("<br>", "<span>");
 			list.get(i).setContent(content);
 		}
 		
